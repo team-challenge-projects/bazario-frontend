@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "format": "prettier --write . --ignore-path .gitignore"
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "next": "15.1.6",
@@ -35,7 +36,9 @@
     "typescript": "^5"
   },
   "lint-staged": {
-    "**/*.{ts,tsx,js,jsx}": "eslint --fix",
-    "**/*.{json,md,css,scss}": "prettier --write"
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

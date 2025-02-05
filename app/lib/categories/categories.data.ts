@@ -1,13 +1,14 @@
-import { CATALOG_CATEGORY } from "@/app/lib/categories/categories.types";
-import React from "react";
+import React from 'react';
 import {
-  PiBabyCarriageLight,
-  PiTShirtLight,
   PiArmchairLight,
-  PiTreeLight,
+  PiBabyCarriageLight,
   PiDeviceMobileLight,
   PiFishLight,
-} from "react-icons/pi";
+  PiTShirtLight,
+  PiTreeLight,
+} from 'react-icons/pi';
+
+import { CATALOG_CATEGORY } from '@/app/lib/categories/categories.types';
 
 interface CategoryTypes {
   id: number;
