@@ -1,9 +1,9 @@
-import Categories from "./modules/Categories";
+import Categories from "./components/Categories";
 
 export default function Home() {
-    return (
-        <div className=" flex-col ">
-            <Categories/>
-        </div>
-    );
+  return (
+    <div className='flex-col '>
+      <Categories />
+    </div>
+  );
 }
