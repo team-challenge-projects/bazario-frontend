@@ -39,7 +39,7 @@ export default {
         'custom-half-dark-grey': '#55615F66',
       },
       backgroundImage: {
-        error: "url('@/public/BazarioBig.svg')",
+        error: "url('/public/BazarioBig.svg')",
       },
     },
   },

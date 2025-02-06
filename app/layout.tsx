@@ -9,8 +9,10 @@ import Header from '@/components/Header';
 import './globals.css';
 
 const poppins = Poppins({
+  subsets: ['latin', 'latin-ext'],
   weight: ['400', '600'],
   variable: '--font-poppins',
+  preload: true,
 });
 
 export const metadata: Metadata = {
