@@ -5,9 +5,9 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Button from '@/app/components/common/Button';
-import ButtonLink from '@/app/components/common/ButtonLink';
-import Input from '@/app/components/common/Input';
+import Button from '@/components/common/Button';
+import ButtonLink from '@/components/common/ButtonLink';
+import Input from '@/components/common/Input';
 
 const Login: FC = () => {
   return (
