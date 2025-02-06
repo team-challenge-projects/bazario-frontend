@@ -1,20 +1,24 @@
-"use client";
-import { FC, useState } from "react";
-import { ButtonProps } from "../../lib/Button.types";
+'use client';
+
+import { FC, useState } from 'react';
+
+import { ButtonProps } from '../../lib/Button.types';
 
 const Button: FC<ButtonProps> = ({ color, text }) => {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <button
-      className={` px-5 py-[14px] gap-[10px] bg-${color} ${
-        isHovered ? (color === "primary" ? "" : "") : ""
-      } rounded-2xl flex justify-center items-center`}
+      className={`gap-[10px] px-5 py-[14px] bg-${color} ${
+        isHovered ? (color === 'primary' ? '' : '') : ''
+      } flex items-center justify-center rounded-2xl`}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <span
         className={`${
-          color === "primary" ? "text-secondary" : "text-primary"
-        } font-semibold font-poppins text-[20px] leading-[30px]`}>
+          color === 'primary' ? 'text-secondary' : 'text-primary'
+        } font-poppins text-[20px] font-semibold leading-[30px]`}
+      >
         {text}
       </span>
     </button>
