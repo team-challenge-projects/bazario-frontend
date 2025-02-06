@@ -8,9 +8,9 @@ import { IoSearchOutline } from 'react-icons/io5';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
-import Button from '@/app/components/common/Button';
-import ButtonLink from '@/app/components/common/ButtonLink';
-import Input from '@/app/components/common/Input';
+import Button from '@/components/common/Button';
+import ButtonLink from '@/components/common/ButtonLink';
+import Input from '@/components/common/Input';
 
 const Header: FC = () => {
   const [isSelected, setIsSelected] = useState(false);

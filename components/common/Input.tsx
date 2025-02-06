@@ -3,7 +3,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
-import { InputProps } from '@/app/lib/Input.types';
+import { InputProps } from '@/lib/Input.types';
 
 const Input: FC<InputProps> = ({ placeholder, icon, type }) => {
   const [value, setValue] = useState('');

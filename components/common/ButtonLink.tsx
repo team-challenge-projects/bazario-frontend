@@ -4,8 +4,9 @@ import { FC } from 'react';
 
 import Link from 'next/link';
 
-import Button from '@/app/components/common/Button';
-import { ButtonLinkProps } from '@/app/lib/ButtonLink.types';
+import { ButtonLinkProps } from '@/lib/ButtonLink.types';
+
+import Button from '@/components/common/Button';
 
 const ButtonLink: FC<ButtonLinkProps> = ({ url, ...buttonProps }) => {
   return (

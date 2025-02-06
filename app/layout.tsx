@@ -3,8 +3,8 @@ import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 
-import Footer from '@/app/components/Footer';
-import Header from '@/app/components/Header';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 
 import './globals.css';
 

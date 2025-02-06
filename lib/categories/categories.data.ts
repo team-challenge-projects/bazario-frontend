@@ -8,7 +8,7 @@ import {
   PiTreeLight,
 } from 'react-icons/pi';
 
-import { CATALOG_CATEGORY } from '@/app/lib/categories/categories.types';
+import { CATALOG_CATEGORY } from '@/lib/categories/categories.types';
 
 interface CategoryTypes {
   id: number;

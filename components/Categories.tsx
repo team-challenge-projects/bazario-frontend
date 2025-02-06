@@ -1,14 +1,14 @@
 'use client';
 
-import React, { FC } from 'react';
+import { FC, useState } from 'react';
 
 import Link from 'next/link';
 
-import { data } from '@/app/lib/categories/categories.data';
+import { data } from '@/lib/categories/categories.data';
 
 const Categories: FC = () => {
-  const [hovered, setHovered] = React.useState<number | null>();
-  const [selected, setSelected] = React.useState<number | null>();
+  const [hovered, setHovered] = useState<number | null>();
+  const [selected, setSelected] = useState<number | null>();
   return (
     <div className="my-[56px] flex flex-col gap-[14px]">
       <p className="text-[28px] font-semibold leading-[42px] text-primary">
