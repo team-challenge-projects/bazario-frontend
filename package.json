@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"app/**/*.{ts,tsx,json,md}\" \"components/**/*.{ts,tsx,json,md}\"",
     "lint-staged": "lint-staged"
   },
   "dependencies": {
