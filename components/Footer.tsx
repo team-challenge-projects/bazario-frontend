@@ -6,7 +6,7 @@ import { IoIosArrowDown } from 'react-icons/io';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import Button from '@/components/common/Button';
+import { Button } from '@/components/ui/button';
 
 interface FooterCategory {
   text: string;
@@ -35,13 +35,15 @@ const Footer: FC = () => {
       <div className="flex w-[1089px] gap-[294px]">
         <div className="flex w-[299px] flex-col gap-[28px]">
           <Image
-            src="@/public/BazarioSmall.svg"
+            src={'@/public/BazarioSmall.svg'}
             width={58}
             height={58}
             alt={'logo'}
           />
-          <Button text={'Додати оголошення'} color={'secondary'} />
-          <Button text={'Увійти/Зареєструватись'} color={'primary'} />
+          <Button variant={'secondary'}>Додати оголошення</Button>
+          <Button asChild>
+            <Link href="/login">Увійти/Зареєструватись</Link>
+          </Button>
         </div>
         <div className="flex gap-[56px]">
           <div className="flex flex-col gap-2">

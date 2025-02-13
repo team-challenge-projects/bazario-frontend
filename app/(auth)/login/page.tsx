@@ -14,7 +14,12 @@ const Login: FC = () => {
     <div className="flex h-[900px] w-screen items-center justify-center bg-custom-half-dark-grey">
       <div className="flex h-[587px] w-[1064px] items-center justify-center rounded-[40px] bg-secondary">
         <div className="flex h-[449px] w-[794px] flex-col items-center">
-          <Image src="@/public/Bazario.svg" alt={'logo'} />
+          <Image
+            src={'@/public/BazarioBig.svg'}
+            alt={'logo'}
+            width={58}
+            height={58}
+          />
           <div className="flex gap-14">
             <form className="flex w-[443px] flex-col gap-[28px]">
               <p className="text-[28px] font-semibold leading-[42px] text-primary">
