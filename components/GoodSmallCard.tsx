@@ -7,8 +7,7 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 
-const GoodSmallCard = ({ bgImage }: { bgImage: string }) => {
-  console.log('bgImage', bgImage);
+const GoodSmallCard = () => {
   return (
     <Card className="rounded-[20px] border-none bg-transparent shadow-none">
       <CardHeader className="mb-2 h-52 w-full rounded-[20px] bg-[url('https://picsum.photos/seed/picsum/300/200')] bg-cover bg-center bg-no-repeat"></CardHeader>
