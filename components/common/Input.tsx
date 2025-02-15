@@ -5,7 +5,7 @@ import { IoEyeOffOutline, IoEyeOutline } from 'react-icons/io5';
 
 import { InputProps } from '@/lib/Input.types';
 
-const Input: FC<InputProps> = ({ placeholder, icon, type }) => {
+const Input: FC<InputProps> = ({ placeholder, icon, type, disabled }) => {
   const [value, setValue] = useState('');
   const [active, setActive] = useState(false);
   const [filled, setFilled] = useState(false);
@@ -24,7 +24,7 @@ const Input: FC<InputProps> = ({ placeholder, icon, type }) => {
 
   return (
     <div
-      className={`${type !== 'search' ? 'w-[443px] border-[1px] border-custom-light-grey' : ''} flex items-center justify-between rounded-full px-5 py-[14px] hover:border-[1px] hover:border-custom-light-grey ${active ? 'border-[1px] border-custom-light-grey' : 'border-0'} ${filled ? 'border-custom-pink' : ''}`}
+      className={`${type !== 'search' ? 'w-[443px] border-[1px] border-custom-light-grey' : ''} flex items-center justify-between rounded-full px-5 py-[14px] hover:border-[1px] hover:border-custom-light-grey ${active ? 'border-[1px] border-custom-light-grey' : 'border-0'} ${filled ? 'border-custom-pink' : ''} sm:hidden md:flex`}
     >
       {!active && icon && <span className="mr-2">{icon}</span>}
       <input
@@ -37,6 +37,7 @@ const Input: FC<InputProps> = ({ placeholder, icon, type }) => {
         className="ml-3.5 bg-transparent font-poppins text-[20px] leading-[30px] outline-none"
         onFocus={() => setActive(true)}
         onBlur={() => setActive(false)}
+        disabled={disabled}
       />
       {type === 'password' && (
         <button
