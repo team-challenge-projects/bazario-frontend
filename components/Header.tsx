@@ -5,28 +5,27 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import Hamburger from 'hamburger-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-import Input from '@/components/common/Input';
-import Link from 'next/link';
 import MenuComponent from '@/components/MenuComponent/MenuComponent';
-import Hamburger from 'hamburger-react';
+import Input from '@/components/common/Input';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 
 const Header: FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   const pathname = usePathname();
   const [isAuthenticated] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <header
       className={`${
         pathname === '/login' ? 'hidden' : ''
-      } mt-[28px] flex h-[58px] full:w-[1760px] xl:w-[1280px] lg:w-[864px] md:w-[728px] sm:w-[335px] items-center justify-between gap-[28px]`}
+      } mt-[28px] flex h-[58px] items-center justify-between gap-[28px] sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1280px] full:w-[1760px]`}
     >
       <Link href={'/'}>
         <Image
@@ -58,7 +57,7 @@ const Header: FC = () => {
           ) : null}
         </div>
         <div className="flex items-center gap-7 sm:hidden lg:flex">
-          <div className="gap-[14px] flex">
+          <div className="flex gap-[14px]">
             <Button variant="ghost" size="icon">
               {!isSelected ? (
                 <IoMdHeartEmpty
@@ -86,7 +85,7 @@ const Header: FC = () => {
               </Button>
             )}
           </div>
-          <div className="gap-3.5 flex">
+          <div className="flex gap-3.5">
             <Button>Додати оголошення</Button>
             <Button asChild variant="secondary">
               <Link href="/login">Увійти/Зареєструватись</Link>

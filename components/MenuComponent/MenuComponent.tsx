@@ -1,10 +1,13 @@
 'use client';
 
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
-import { data } from '@/lib/menu.data';
-import Link from 'next/link';
 import { FiLogOut } from 'react-icons/fi';
+
+import Link from 'next/link';
+
+import { data } from '@/lib/menu.data';
+
 import { Button } from '@/components/ui/button';
 
 const MenuComponent: FC<{
@@ -28,7 +31,7 @@ const MenuComponent: FC<{
       <Menu
         right
         isOpen={isOpen}
-        onStateChange={({ isOpen }) => setIsOpen(isOpen)}
+        onStateChange={({ isOpen }: { isOpen: boolean }) => setIsOpen(isOpen)}
         noOverlay
         styles={{
           bmMenuWrap: {
@@ -54,16 +57,16 @@ const MenuComponent: FC<{
             justifyContent: 'start',
             gap: '16px',
           },
-          bmItem: {
-            display: 'flex',
-          },
+          // bmItem: {
+          //   display: 'flex',
+          // },
         }}
       >
         {data.map((item, id) => (
           <Link
             key={id}
             href={item.link}
-            className="font-poppins font-medium text-[18px] leading-[21px] text-primary tracking-[0px] "
+            className="font-poppins text-[18px] font-medium leading-[21px] tracking-[0px] text-primary"
           >
             {item.text}
           </Link>
@@ -72,7 +75,7 @@ const MenuComponent: FC<{
           variant={'ghost'}
           size={'logout'}
           onClick={LogOut}
-          className="text-custom-dark-grey w-fit h-fit flex items-end gap-2"
+          className="flex h-fit w-fit items-end gap-2 text-custom-dark-grey"
         >
           <FiLogOut className="size-[18px] rotate-180" />
           Вийти
