@@ -1,11 +1,11 @@
 import Categories from '@/components/Categories';
-import Popular from '@/components/Popular';
+import GoodsList from '@/components/GoodsList';
 
 export default function Home() {
   return (
     <div className="flex-col">
       <Categories />
-      <Popular />
+      <GoodsList />
     </div>
   );
 }
