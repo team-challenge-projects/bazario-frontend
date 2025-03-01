@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 'use client';
 
 import { useForm } from 'react-hook-form';
 
-import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -12,125 +10,218 @@ import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
-/* eslint-disable @typescript-eslint/no-misused-promises */
-
-const items = [
-  {
-    id: 'recents',
-    label: 'Recents',
-  },
-  {
-    id: 'home',
-    label: 'Home',
-  },
-  {
-    id: 'applications',
-    label: 'Applications',
-  },
-  {
-    id: 'desktop',
-    label: 'Desktop',
-  },
-  {
-    id: 'downloads',
-    label: 'Downloads',
-  },
-  {
-    id: 'documents',
-    label: 'Documents',
-  },
-] as const;
-
+// Схема валідації для кожної категорії
 const FormSchema = z.object({
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: 'You have to select at least one item.',
-  }),
+  minPrice: z
+    .number({ invalid_type_error: 'Мінімальна ціна має бути числом' })
+    .optional(),
+  maxPrice: z
+    .number({ invalid_type_error: 'Максимальна ціна має бути числом' })
+    .optional(),
+  rating: z.array(z.string()).min(1, 'Оберіть хоча б один рейтинг'),
+  condition: z.array(z.string()).min(1, 'Оберіть хоча б один стан'),
+  brand: z.array(z.string()).min(1, 'Оберіть хоча б один бренд'),
+  location: z.array(z.string()).min(1, 'Оберіть хоча б одну область'),
 });
+
+// Дані для чекбоксів
+const categories = {
+  rating: [
+    { id: 'highest', label: 'Найвищий' },
+    { id: 'medium', label: 'Середній' },
+  ],
+  condition: [
+    { id: 'new', label: 'Новий' },
+    { id: 'good', label: 'В гарному стані' },
+    { id: 'used', label: 'Довго уживаний' },
+  ],
+  brand: [
+    { id: 'samsung', label: 'Samsung' },
+    { id: 'apple', label: 'Apple' },
+    { id: 'xiaomi', label: 'Xiaomi' },
+  ],
+  location: [
+    { id: 'kyiv', label: 'Київська обл.' },
+    { id: 'chernihiv', label: 'Чернігівська обл.' },
+    { id: 'lviv', label: 'Львівська обл.' },
+  ],
+  deliveryMethod: [
+    { id: 'nova_poshta', label: 'Nova Poshta' },
+    { id: 'pickup', label: 'Pickup' },
+    { id: 'ukrposhta', label: 'Ukrposhta' },
+  ],
+  color: [
+    { id: 'blue', label: 'Blue' },
+    { id: 'dark_blue', label: 'Dark Blue' },
+    { id: 'red', label: 'Red' },
+  ],
+  childAge: [
+    { id: 'age_0_5', label: '0.5 year' },
+    { id: 'age_0_5_1', label: '0.5 - 1 year' },
+  ],
+  material: [
+    { id: 'leather', label: 'Leather' },
+    { id: 'polyester', label: 'Polyester' },
+    { id: 'plastic', label: 'Plastic' },
+  ],
+  size: [
+    { id: 'xxs', label: 'XXS' },
+    { id: 'xs', label: 'XS' },
+    { id: 's', label: 'S' },
+  ],
+};
 
 export function CategoriesSidebar() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      items: ['recents', 'home'],
+      minPrice: undefined,
+      maxPrice: undefined,
+      rating: [],
+      condition: [],
+      brand: [],
+      location: [],
     },
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-    console.log('data', data);
+    console.log('Submitted data:', data);
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="items"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
-                <FormDescription>
-                  Select the items you want to display in the sidebar.
-                </FormDescription>
-              </div>
-              {items.map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== item.id,
-                                    ),
-                                  );
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+    <aside className="mb-20 mr-8 w-72">
+      <h2 className="mb-4 text-xl font-semibold">Дата публікації</h2>
+      <time
+        className="inset-shadow-[0px_1px_4px_0px_rgba(12,12,13,0.05)] h-12 rounded-[1.25rem] border border-custom-dark-grey px-5 py-2 text-center text-xl font-normal text-custom-light-grey"
+        dateTime="2022-02-22T00:00:00Z"
+      >
+        22 | 02 | 2022
+      </time>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <h2 className="mb-2 mt-4 text-xl font-semibold capitalize">Ціна</h2>
+          <div className="flex flex-row space-x-4">
+            <FormField
+              control={form.control}
+              name="minPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Від"
+                      className="h-12 w-20 rounded-[1.25rem] border border-custom-dark-grey text-center"
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) : undefined,
+                        )
+                      }
+                      value={field.value ?? ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="maxPrice"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="До"
+                      className="h-12 w-20 rounded-[1.25rem] border border-custom-dark-grey text-center"
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value ? Number(e.target.value) : undefined,
+                        )
+                      }
+                      value={field.value ?? ''}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {Object.entries(categories).map(([categoryName, items]) => (
+            <FormField
+              key={categoryName}
+              control={form.control}
+              name={categoryName as keyof z.infer<typeof FormSchema>}
+              render={({ field }) => (
+                <FormItem className="mb-2 mt-4">
+                  <FormLabel className="text-xl font-semibold capitalize">
+                    {getCategoryLabel(categoryName)}
+                  </FormLabel>
+                  {items.map((item) => (
+                    <FormItem key={item.id} className="flex items-center gap-2">
+                      <FormControl>
+                        <Checkbox
+                          className="rounded-1 h-7 w-7 rounded-[0.25rem] border border-custom-dark-grey"
+                          checked={
+                            Array.isArray(field.value) &&
+                            field.value.includes(item.id)
+                          }
+                          onCheckedChange={(checked) => {
+                            const currentValue = Array.isArray(field.value)
+                              ? field.value
+                              : [];
+                            const newValue: string[] = checked
+                              ? [...currentValue, item.id]
+                              : currentValue.filter(
+                                  (v: string) => v !== item.id,
+                                );
+
+                            field.onChange(newValue);
+                          }}
+                        />
+                      </FormControl>
+
+                      <FormLabel className="!m-0 align-middle text-[1.125rem] font-medium leading-[1.2]">
+                        {item.label}
+                      </FormLabel>
+                    </FormItem>
+                  ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          ))}
+          <Button
+            type="submit"
+            className="shadow-[0px_1px_3px_0px_rgba(0, 0, 0, 0.3),0px_4px_8px_3px_rgba(0, 0, 0, 0.15)] hover:bg-custom-light-mint text-custom-black mt-8 flex w-full flex-row justify-center rounded-[1.25rem] bg-[#f1f5f9] px-5 py-4 align-middle text-xl font-semibold"
+          >
+            Застосувати фільтри
+          </Button>
+        </form>
+      </Form>
+    </aside>
   );
+}
+
+function getCategoryLabel(category: string) {
+  switch (category) {
+    case 'rating':
+      return 'Рейтинг';
+    case 'condition':
+      return 'Стан';
+    case 'brand':
+      return 'Бренд';
+    case 'location':
+      return 'Місцезнаходження';
+    default:
+      return category;
+  }
 }

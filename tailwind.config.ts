@@ -45,6 +45,8 @@ export default {
         'custom-light-grey': '#C0C0C0',
         'custom-dark-grey': '#55615F',
         'custom-half-dark-grey': '#55615F66',
+        'custom-light-mint': '#DFE9E8',
+        'custom-black': '#000013',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

@@ -48,3 +48,12 @@ export const data: CategoryTypes[] = [
     icon: PiTreeLight,
   },
 ] as const;
+
+export const categoriesName = {
+  [CATALOG_CATEGORY.KIDS]: 'Діти',
+  [CATALOG_CATEGORY.CREATURES]: 'Тварини',
+  [CATALOG_CATEGORY.OUTFIT]: 'Одяг',
+  [CATALOG_CATEGORY.ELECTRONICS]: 'Електроніка',
+  [CATALOG_CATEGORY.HOME]: 'Дім',
+  [CATALOG_CATEGORY.GARDEN]: 'Сад',
+};
