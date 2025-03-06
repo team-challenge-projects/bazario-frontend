@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 
 import { categoriesName } from '@/lib/categories/categories.data';
 
-import { CategoriesSidebar } from '@/components/CategoriesSidebar';
+import { CategoriesSidebar } from '@/app/categories/CategoriesSidebar';
 
 interface CategoriesPageProps {
   children: React.ReactNode;
