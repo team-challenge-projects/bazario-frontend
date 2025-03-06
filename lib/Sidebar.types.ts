@@ -1,5 +1,3 @@
-import { Label } from '@/components/ui/label';
-
 export interface SidebarItem {
   id: string;
   label: string;
