@@ -29,6 +29,13 @@ const FormSchema = z.object({
   condition: z.array(z.string()).min(1, 'Оберіть хоча б один стан'),
   brand: z.array(z.string()).min(1, 'Оберіть хоча б один бренд'),
   location: z.array(z.string()).min(1, 'Оберіть хоча б одну область'),
+  deliveryMethod: z
+    .array(z.string())
+    .min(1, 'Оберіть хоча б один спосіб доставки'),
+  color: z.array(z.string()).min(1, 'Оберіть хоча б однин колір'),
+  childAge: z.array(z.string()).min(1, 'Оберіть хоча б одну вікову категорію'),
+  material: z.array(z.string()).min(1, 'Оберіть хоча б один матеріал'),
+  size: z.array(z.string()).min(1, 'Оберіть хоча б однин розмір'),
 });
 
 // Дані для чекбоксів
@@ -53,23 +60,24 @@ const categories = {
     { id: 'lviv', label: 'Львівська обл.' },
   ],
   deliveryMethod: [
-    { id: 'nova_poshta', label: 'Nova Poshta' },
-    { id: 'pickup', label: 'Pickup' },
-    { id: 'ukrposhta', label: 'Ukrposhta' },
+    { id: 'nova_poshta', label: 'Новою поштою' },
+    { id: 'pickup', label: 'Самовивіз' },
+    { id: 'ukrposhta', label: 'Укрпоштою' },
   ],
   color: [
-    { id: 'blue', label: 'Blue' },
-    { id: 'dark_blue', label: 'Dark Blue' },
-    { id: 'red', label: 'Red' },
+    { id: 'blue', label: 'Блакитний' },
+    { id: 'dark_blue', label: 'Синій' },
+    { id: 'red', label: 'Червоний' },
   ],
   childAge: [
-    { id: 'age_0_5', label: '0.5 year' },
-    { id: 'age_0_5_1', label: '0.5 - 1 year' },
+    { id: 'age_0_5', label: '0 - 0.5 року' },
+    { id: 'age_0_5_1', label: '0.5 - 1 рік' },
+    { id: 'age_1_2', label: '1 - 2 роки' },
   ],
   material: [
-    { id: 'leather', label: 'Leather' },
-    { id: 'polyester', label: 'Polyester' },
-    { id: 'plastic', label: 'Plastic' },
+    { id: 'leather', label: 'Шкіра' },
+    { id: 'polyester', label: 'Поліестер' },
+    { id: 'plastic', label: 'Пластик' },
   ],
   size: [
     { id: 'xxs', label: 'XXS' },
@@ -201,7 +209,7 @@ export function CategoriesSidebar() {
           ))}
           <Button
             type="submit"
-            className="shadow-[0px_1px_3px_0px_rgba(0, 0, 0, 0.3),0px_4px_8px_3px_rgba(0, 0, 0, 0.15)] hover:bg-custom-light-mint text-custom-black mt-8 flex w-full flex-row justify-center rounded-[1.25rem] bg-[#f1f5f9] px-5 py-4 align-middle text-xl font-semibold"
+            className="shadow-[0px_1px_3px_0px_rgba(0, 0, 0, 0.3),0px_4px_8px_3px_rgba(0, 0, 0, 0.15)] mt-8 flex w-full flex-row justify-center rounded-[1.25rem] bg-[#f1f5f9] px-5 py-4 align-middle text-xl font-semibold text-custom-black hover:bg-custom-light-mint"
           >
             Застосувати фільтри
           </Button>
@@ -221,6 +229,16 @@ function getCategoryLabel(category: string) {
       return 'Бренд';
     case 'location':
       return 'Місцезнаходження';
+    case 'deliveryMethod':
+      return 'Спосіб доставки';
+    case 'color':
+      return 'Колір';
+    case 'childAge':
+      return 'Вік дитини';
+    case 'material':
+      return 'Матеріал';
+    case 'size':
+      return 'Розмір';
     default:
       return category;
   }
