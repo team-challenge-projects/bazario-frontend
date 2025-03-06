@@ -73,7 +73,7 @@ const MenuComponent: FC<{
         ))}
         <Button
           variant={'ghost'}
-          size={'logout'}
+          size={'lg'}
           onClick={LogOut}
           className="flex h-fit w-fit items-end gap-2 text-custom-dark-grey"
         >
