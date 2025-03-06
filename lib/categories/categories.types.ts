@@ -1,10 +1,10 @@
 export enum CATALOG_CATEGORY {
-  KIDS = 'діти',
-  CREATURES = 'тварини',
-  OUTFIT = 'одяг',
-  ELECTRONICS = 'eлектроніка',
-  HOME = 'дім',
-  GARDEN = 'сад',
+  KIDS = 'kids',
+  CREATURES = 'creatures',
+  OUTFIT = 'outfit',
+  ELECTRONICS = 'electronics',
+  HOME = 'home',
+  GARDEN = 'garden',
 }
 export interface CatalogProps {
   page: CATALOG_CATEGORY;
