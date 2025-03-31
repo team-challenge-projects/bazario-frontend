@@ -1,3 +1,8 @@
+import { IoGitMergeOutline } from 'react-icons/io5';
+
+import { PlusInCircleIcon } from '@/public/PlusInCircleIcon';
+
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 
 export const SellerSidebar = () => {
@@ -8,17 +13,57 @@ export const SellerSidebar = () => {
           <div className="text-xl font-semibold text-custom-black">
             Рейтинг:
           </div>
-          <div> 9/10</div>
+          <div className="text-lg font-medium text-custom-dark-grey">
+            ⭐ 9/10
+          </div>
         </li>
-        <li className="flex justify-start gap-4">
+        <li className="flex items-center justify-start gap-4">
           <div className="text-xl font-semibold text-custom-black">
             Відгуки:
           </div>
-          <div> 9/10</div>
+          <div className="relative mr-4 flex h-[60px] w-full">
+            {[...Array(5).keys()].map((item) => (
+              <div style={{ left: item * 40, position: 'absolute' }} key={item}>
+                <Avatar className="h-[60px] w-[60px]">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                </Avatar>
+              </div>
+            ))}{' '}
+            <div className="absolute right-0 top-[50%] translate-y-[-50%] text-xl font-semibold text-custom-black underline underline-offset-4">
+              200 +
+            </div>
+          </div>
         </li>
-        <li className="flex justify-start gap-4">
-          <div className="text-lg font-semibold text-custom-black">Ім'я:</div>
-          <div> 9/10</div>
+
+        <li className="flex flex-col gap-1">
+          <div className="flex items-center justify-start gap-4">
+            <Avatar className="h-[60px] w-[60px]">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+
+            <div className="text-lg font-semibold text-custom-black">Ім'я</div>
+            <div className="text-lg font-medium text-custom-dark-grey">
+              ⭐ 9/10
+            </div>
+            <div className="flex flex-row items-center gap-2">
+              <button>
+                <PlusInCircleIcon />
+              </button>
+              <span className="text-xl font-semibold">Додати відгук</span>
+            </div>
+          </div>
+          <div>
+            <p className="h-20 overflow-clip">
+              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem
+              dolores facilis esse nostrum labore amet nulla ipsam mollitia
+              aliquam. Velit laborum at saepe modi quibusdam ipsa tempora
+              officia vero dolor.
+            </p>
+            <button className="bg-transparent text-sm font-semibold text-custom-dark-grey">
+              Читати більше{' '}
+            </button>
+          </div>
         </li>
         <li className="flex justify-start gap-4">
           <div className="text-xl font-semibold text-custom-black">
