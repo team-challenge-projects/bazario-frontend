@@ -16,7 +16,7 @@ export const GoodHorizontalCard = ({ item }: { item: IPost }) => {
       <CardHeader className="mb-2 h-[88px] w-[88px] shrink-0 overflow-clip rounded-[20px] bg-[url('https://picsum.photos/seed/picsum/300/200')] bg-cover bg-center bg-no-repeat"></CardHeader>
       <CardContent className="flex flex-col justify-between px-0 pb-2">
         <h3 className="text-lg font-semibold text-custom-black">
-          {item.title}
+          {`${item.title} (${item.id}) `}
         </h3>
         <p className="h-[56px] overflow-clip text-lg font-medium text-custom-dark-grey">
           {item.body}

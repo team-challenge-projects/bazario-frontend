@@ -3,9 +3,15 @@ import { fetchPosts } from '@/lib/api/api';
 import { GoodHorizontalCard } from '@/components/GoodHorizontalCard';
 import { PaginationWithLinks } from '@/components/PaginationWithLinks';
 
-const SellerCard = async ({ searchParams }) => {
-  const { posts, totalPosts } = await fetchPosts(1, 5);
-  console.log('searchParams', searchParams);
+interface SellerCardProps {
+  searchParams: Promise<{ [key: string]: string } | undefined>;
+}
+const SellerCard = async ({ searchParams }: SellerCardProps) => {
+  const result = await searchParams;
+  const currentPage = parseInt(result?.page || '1');
+  const pageSize = parseInt(result?.pageSize || '5');
+  const { posts, totalPosts } = await fetchPosts(currentPage, pageSize);
+
   return (
     <>
       <h1 className="mb-4 text-xl font-semibold text-custom-black">
@@ -15,7 +21,11 @@ const SellerCard = async ({ searchParams }) => {
         {posts.map((item) => (
           <GoodHorizontalCard key={item.id} item={item} />
         ))}
-        <PaginationWithLinks page={1} pageSize={5} totalCount={totalPosts} />
+        <PaginationWithLinks
+          page={currentPage}
+          pageSize={pageSize}
+          totalCount={totalPosts}
+        />
       </div>
     </>
   );

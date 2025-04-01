@@ -22,7 +22,6 @@ const TruncatedText: React.FC<TruncatedTextProps> = ({
     const element = textRef.current;
     const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
     const maxHeight = maxLines * lineHeight;
-    console.log('element', element.scrollHeight, maxHeight);
     if (element.scrollHeight > maxHeight) {
       let truncated = text;
       while (element.scrollHeight > maxHeight && truncated.length > 0) {

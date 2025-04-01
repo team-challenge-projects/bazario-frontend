@@ -1,12 +1,6 @@
 import * as React from 'react';
 
-import {
-  ArrowLeft,
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
-  MoreHorizontal,
-} from 'lucide-react';
+import { ArrowLeft, ArrowRight, MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
@@ -78,7 +72,7 @@ const PaginationPrevious = ({
     className={cn('gap-1 pl-2.5', className)}
     {...props}
   >
-    <div className="flex items-center gap-1 rounded-full border border-custom-dark-grey p-1">
+    <div className="flex items-center gap-1 rounded-full border-2 border-custom-dark-grey p-1">
       <ArrowLeft />
     </div>
   </PaginationLink>
@@ -95,7 +89,7 @@ const PaginationNext = ({
     className={cn('gap-1 pr-2.5', className)}
     {...props}
   >
-    <div className="flex items-center gap-1 rounded-full border border-custom-dark-grey p-1">
+    <div className="flex items-center gap-1 rounded-full border-2 border-custom-dark-grey p-1">
       <ArrowRight />
     </div>
   </PaginationLink>
@@ -108,10 +102,10 @@ const PaginationEllipsis = ({
 }: React.ComponentProps<'span'>) => (
   <span
     aria-hidden
-    className={cn('flex h-9 w-9 items-center justify-center', className)}
+    className={cn('flex h-12 w-9 items-center justify-center', className)}
     {...props}
   >
-    <MoreHorizontal className="h-4 w-4" />
+    <MoreHorizontal className="h-8 w-8" />
     <span className="sr-only">More pages</span>
   </span>
 );

@@ -70,7 +70,11 @@ export function PaginationWithLinks({
       for (let i = 1; i <= totalPageCount; i++) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink href={buildLink(i)} isActive={page === i}>
+            <PaginationLink
+              href={buildLink(i)}
+              isActive={page === i}
+              className="border border-input bg-red-600 shadow-sm hover:bg-red-500 hover:text-accent-foreground"
+            >
               {i}
             </PaginationLink>
           </PaginationItem>,
@@ -79,7 +83,10 @@ export function PaginationWithLinks({
     } else {
       items.push(
         <PaginationItem key={1}>
-          <PaginationLink href={buildLink(1)} isActive={page === 1}>
+          <PaginationLink
+            href={buildLink(1)}
+            className={`${page === 1 && 'bg-custom-mint'} h-fit w-fit rounded-[100px] border-2 border-custom-black bg-none px-4 py-[2px] text-sm font-semibold shadow-none hover:bg-none`}
+          >
             1
           </PaginationLink>
         </PaginationItem>,
@@ -99,7 +106,10 @@ export function PaginationWithLinks({
       for (let i = start; i <= end; i++) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink href={buildLink(i)} isActive={page === i}>
+            <PaginationLink
+              href={buildLink(i)}
+              className={`${page === i && 'bg-custom-mint'} h-fit w-fit rounded-[100px] border-2 border-custom-black bg-none px-4 py-[2px] text-sm font-semibold shadow-none hover:bg-none`}
+            >
               {i}
             </PaginationLink>
           </PaginationItem>,
@@ -109,7 +119,7 @@ export function PaginationWithLinks({
       if (page < totalPageCount - 2) {
         items.push(
           <PaginationItem key="ellipsis-end">
-            <PaginationEllipsis />
+            <PaginationEllipsis className="items-end" />
           </PaginationItem>,
         );
       }
@@ -118,7 +128,7 @@ export function PaginationWithLinks({
         <PaginationItem key={totalPageCount}>
           <PaginationLink
             href={buildLink(totalPageCount)}
-            isActive={page === totalPageCount}
+            className={`h-fit w-fit rounded-[100px] border-2 border-custom-black bg-none px-4 py-[2px] text-sm font-semibold shadow-none hover:bg-none ${page === totalPageCount && 'bg-custom-mint'}`}
           >
             {totalPageCount}
           </PaginationLink>
@@ -133,7 +143,7 @@ export function PaginationWithLinks({
     <div className="flex w-full flex-col items-center gap-3 md:flex-row">
       <Pagination className={cn({ 'md:justify-end': pageSizeSelectOptions })}>
         <PaginationContent className="max-sm:gap-0">
-          <PaginationItem>
+          <PaginationItem className="border-none">
             <PaginationPrevious
               href={buildLink(Math.max(page - 1, 1))}
               aria-disabled={page === 1}
