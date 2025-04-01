@@ -1,11 +1,11 @@
-import { Suspense } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import { CategoriesSidebar } from '@/app/categories/CategoriesSidebar';
 
 import { CategoryName } from './CategoryName';
 
 interface CategoriesPageProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function Layout({ children }: CategoriesPageProps) {
@@ -15,7 +15,9 @@ export default function Layout({ children }: CategoriesPageProps) {
         <CategoryName />
       </Suspense>
       <div className="flex flex-row">
-        <CategoriesSidebar />
+        <Suspense>
+          <CategoriesSidebar />
+        </Suspense>
 
         <main className="w-full">{children}</main>
       </div>
