@@ -95,7 +95,7 @@ export function PaginationWithLinks({
       if (page > 3) {
         items.push(
           <PaginationItem key="ellipsis-start">
-            <PaginationEllipsis />
+            <PaginationEllipsis className="items-end" />
           </PaginationItem>,
         );
       }

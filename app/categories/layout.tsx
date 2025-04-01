@@ -15,7 +15,9 @@ export default function Layout({ children }: CategoriesPageProps) {
         <CategoryName />
       </Suspense>
       <div className="flex flex-row">
-        <CategoriesSidebar />
+        <Suspense>
+          <CategoriesSidebar />
+        </Suspense>
 
         <main className="w-full">{children}</main>
       </div>

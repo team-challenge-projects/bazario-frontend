@@ -1,11 +1,18 @@
-import { IoGitMergeOutline } from 'react-icons/io5';
+'use client';
+
+import { useState } from 'react';
 
 import { PlusInCircleIcon } from '@/public/PlusInCircleIcon';
+import { DivideSquareIcon } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 
 export const SellerSidebar = () => {
+  const [isReadMore, setIsReadMore] = useState(false);
+  const handleOnReadMore = () => {
+    setIsReadMore((prev) => !prev);
+  };
   return (
     <div className="w-[413px]">
       <ul className="mb-4 flex flex-col gap-2">
@@ -53,15 +60,29 @@ export const SellerSidebar = () => {
               <span className="text-xl font-semibold">Додати відгук</span>
             </div>
           </div>
-          <div>
-            <p className="h-20 overflow-clip">
+          <div className="flex flex-col gap-2">
+            <p className={isReadMore ? 'h-fit' : 'h-20 overflow-clip'}>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorem
               dolores facilis esse nostrum labore amet nulla ipsam mollitia
               aliquam. Velit laborum at saepe modi quibusdam ipsa tempora
               officia vero dolor.
             </p>
-            <button className="bg-transparent text-sm font-semibold text-custom-dark-grey">
-              Читати більше{' '}
+            <button
+              type="button"
+              onClick={handleOnReadMore}
+              className="bg-transparent text-sm font-semibold text-custom-dark-grey"
+            >
+              {isReadMore ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div>Читати менше</div>
+                  <div className="h-[6px] w-[6px] translate-y-[1px] -rotate-[135deg] border-b-2 border-r-2 border-custom-dark-grey"></div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center gap-2">
+                  <div>Читати більше</div>
+                  <div className="h-[6px] w-[6px] -translate-y-[2px] rotate-45 border-b-2 border-r-2 border-custom-dark-grey"></div>
+                </div>
+              )}
             </button>
           </div>
         </li>

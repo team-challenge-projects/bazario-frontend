@@ -1,7 +1,5 @@
-import React from 'react';
-
 const SellersPage = () => {
-  return <div>SellersPage</div>;
+  return <div>Redirecting...</div>;
 };
 
 export default SellersPage;
