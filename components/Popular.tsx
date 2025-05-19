@@ -17,7 +17,11 @@ const Popular: FC = () => {
       <p className="text-[28px] font-semibold leading-[42px] text-primary">
         Популярні товари
       </p>
-      <ProductCard data={product} />
+      <div className="mb-28 grid w-full grid-cols-5 gap-x-[22px] gap-y-4">
+        {Array.from({ length: 15 }, (_, index) => (
+          <ProductCard key={index} data={product} />
+        ))}
+      </div>
     </div>
   );
 };

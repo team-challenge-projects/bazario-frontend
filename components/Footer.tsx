@@ -35,7 +35,7 @@ const Footer: FC = () => {
       <div className="flex w-[1089px] gap-[294px]">
         <div className="flex w-[299px] flex-col gap-[28px]">
           <Image
-            src={'@/public/BazarioSmall.svg'}
+            src={'/BazarioSmall.svg'}
             width={58}
             height={58}
             alt={'logo'}

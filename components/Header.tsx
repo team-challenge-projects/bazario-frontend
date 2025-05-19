@@ -21,19 +21,17 @@ const Header: FC = () => {
   const [isAuthenticated] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
+  const isHeaderHidden = hideHeaderPaths.includes(pathname);
+
   return (
     <header
       className={`${
-        pathname === '/login' ? 'hidden' : ''
+        isHeaderHidden ? 'hidden' : ''
       } mt-[28px] flex h-[58px] items-center justify-between gap-[28px] sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1280px] full:w-[1760px]`}
     >
       <Link href={'/'}>
-        <Image
-          src={'@/public/BazarioSmall.svg'}
-          width={58}
-          height={58}
-          alt="logo"
-        />
+        <Image src={'/BazarioSmall.svg'} width={58} height={58} alt="logo" />
       </Link>
       <div className="flex items-center gap-7">
         <Input

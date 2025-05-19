@@ -16,6 +16,8 @@ const buttonVariants = cva(
           'bg-secondary text-primary shadow-sm hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80',
         ghost: 'bg-transparent text-[18px] font-medium leading-[21px] ',
         link: 'text-neutral-900 underline-offset-4 hover:underline dark:text-neutral-50',
+        google:
+          'bg-custom-gray-base text-primary shadow-sm hover:bg-neutral-100/80 dark:bg-neutral-800 dark:text-neutral-50 dark:hover:bg-neutral-800/80',
       },
       size: {
         default: 'gap-[10px] px-5 py-[14px]',

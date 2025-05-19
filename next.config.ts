@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['picsum.photos'],
   },
+  crossOrigin: 'anonymous',
 };
 
 export default nextConfig;
