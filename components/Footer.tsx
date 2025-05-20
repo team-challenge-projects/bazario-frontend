@@ -6,6 +6,9 @@ import { IoIosArrowDown } from 'react-icons/io';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { categoriesName } from '@/lib/categories/categories.data';
+import { CATALOG_CATEGORY } from '@/lib/categories/categories.types';
+
 import { Button } from '@/components/ui/button';
 
 interface FooterCategory {
@@ -15,12 +18,15 @@ interface FooterCategory {
 
 const Footer: FC = () => {
   const footerCategories: FooterCategory[] = [
-    { text: 'Діти', link: '#' },
-    { text: 'Тварини', link: '#' },
-    { text: 'Одяг', link: '#' },
-    { text: 'Електроніка', link: '#' },
-    { text: 'Дім', link: '#' },
-    { text: 'Сад', link: '#' },
+    { text: 'Діти', link: `${categoriesName[CATALOG_CATEGORY.KIDS]}` },
+    { text: 'Тварини', link: `${categoriesName[CATALOG_CATEGORY.CREATURES]}` },
+    { text: 'Одяг', link: `${categoriesName[CATALOG_CATEGORY.OUTFIT]}` },
+    {
+      text: 'Електроніка',
+      link: `${categoriesName[CATALOG_CATEGORY.ELECTRONICS]}`,
+    },
+    { text: 'Дім', link: `${categoriesName[CATALOG_CATEGORY.HOME]}` },
+    { text: 'Сад', link: `${categoriesName[CATALOG_CATEGORY.GARDEN]}` },
   ];
 
   const footerHelp: FooterCategory[] = [
@@ -31,25 +37,27 @@ const Footer: FC = () => {
   ];
 
   return (
-    <footer className="flex h-[314px] w-screen items-center justify-center bg-primary">
-      <div className="flex w-[1089px] gap-[294px]">
-        <div className="flex w-[299px] flex-col gap-[28px]">
+    <footer className="flex h-full w-screen items-center justify-center bg-primary md:h-[314px]">
+      <div className="flex sm:flex-col sm:px-5 sm:py-11 md:h-[213px] md:flex-row md:gap-[20px] md:px-0 md:py-0 lg:gap-[109px] xl:w-[860px] full:w-[1083px] full:gap-[294px]">
+        <div className="flex w-[299px] items-start gap-[28px] sm:h-[118px] sm:flex-row md:h-[234px] md:flex-col lg:h-[213px]">
           <Image
-            src={'@/public/BazarioSmall.svg'}
+            src={'/BazarioSmall.svg'}
             width={58}
             height={58}
             alt={'logo'}
           />
-          <Button variant={'secondary'}>Додати оголошення</Button>
-          <Button asChild>
-            <Link href="/login">Увійти/Зареєструватись</Link>
-          </Button>
+          <div className="flex w-full flex-col gap-2">
+            <Button variant={'secondary'}>Додати оголошення</Button>
+            <Button asChild>
+              <Link href="/login">Увійти/Зареєструватись</Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex gap-[56px]">
+        <div className="flex sm:gap-[16px] xl:gap-[56px] full:gap-[94px]">
           <div className="flex flex-col gap-2">
             {footerCategories.map((category, id) => (
-              <Link key={id} href={`#`}>
-                <p className="flex items-center gap-3.5 text-[18px] font-semibold leading-[27px] text-secondary">
+              <Link key={id} href={`/categories?category=${category.link}`}>
+                <p className="flex items-center gap-3.5 text-[16px] font-semibold leading-[27px] text-secondary md:text-[18px]">
                   {category.text}{' '}
                   <IoIosArrowDown className="size-[14px] text-secondary" />{' '}
                 </p>
@@ -59,7 +67,7 @@ const Footer: FC = () => {
           <div className="flex flex-col gap-2">
             {footerHelp.map((category, id) => (
               <Link key={id} href={`/category/${category.link}`}>
-                <p className="text-[18px] font-semibold leading-[27px] text-secondary">
+                <p className="text-[16px] font-semibold leading-[27px] text-secondary md:text-[18px]">
                   {category.text}
                 </p>
               </Link>
