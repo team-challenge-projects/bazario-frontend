@@ -40,15 +40,15 @@ const Register: FC = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [emailForConfirmation, setEmailForConfirmation] = useState('');
 
-  const time = new Date();
-  time.setSeconds(time.getSeconds() + 30);
+  const now = new Date();
+  now.setSeconds(now.getSeconds() + 30);
 
-  const onSubmit = async (
-    data: Omit<RegisterFormData, 'accept' | 'repeatPassword'>,
-  ) => {
+  const onSubmit = async (data: RegisterFormData) => {
+    const { accept, repeatPassword, ...cleanedData } = data;
+
     try {
-      await registerUser(data);
-      await sendVerificationEmail(data.email);
+      await registerUser(cleanedData);
+      await sendVerificationEmail(cleanedData.email);
     } catch (error) {
       console.log(error);
     }
@@ -103,7 +103,7 @@ const Register: FC = () => {
               </span>
             </p>
             <span className="font-poppins text-[16px] text-custom-dark-grey">
-              Надіслати посилання ще раз через <Timer expiryTimestamp={time} />{' '}
+              Надіслати посилання ще раз через <Timer expiryTimestamp={now} />{' '}
               сек
             </span>
           </div>
@@ -114,7 +114,7 @@ const Register: FC = () => {
             <Image src="/BazarioBig.svg" alt="logo" width={106} height={106} />
             <div className="flex lg:gap-14 sm:gap-4 md:flex-row sm:flex-col">
               <form
-                onSubmit={void handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(onSubmit)}
                 className="flex lg:w-[443px] md:w-[360px] sm:w-[303px] flex-col gap-[28px]"
               >
                 <p className="text-[28px] font-semibold leading-[42px] text-primary">
@@ -181,7 +181,7 @@ const Register: FC = () => {
                   <p className="my-[28px] text-center text-[14px] font-semibold leading-[21px] text-primary">
                     або
                   </p>
-                  <Button variant="google">
+                  <Button variant="ghost">
                     <FcGoogle /> Увійти через Google
                   </Button>
                 </div>

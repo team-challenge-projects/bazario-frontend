@@ -100,7 +100,7 @@ const Login: FC = () => {
                 <p className="my-[28px] text-center text-[14px] font-semibold leading-[21px] text-primary">
                   або
                 </p>
-                <Button variant="google">
+                <Button variant="ghost">
                   <FcGoogle /> Увійти через Google
                 </Button>
               </div>

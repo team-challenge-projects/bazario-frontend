@@ -45,8 +45,8 @@ export default {
         'custom-light-grey': '#C0C0C0',
         'custom-dark-grey': '#55615F',
         'custom-half-dark-grey': '#55615F66',
-        'custom-gray-base': '#DFE9E8',
-        success: '#00ECBF',
+        'custom-light-mint': '#DFE9E8',
+        'custom-black': '#000013',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -79,10 +79,17 @@ export default {
           '4': 'hsl(var(--chart-4))',
           '5': 'hsl(var(--chart-5))',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
-      // backgroundImage: {
-      // 	error: 'url('/public/BazarioBig.svg')'
-      // },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
