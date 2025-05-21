@@ -3,6 +3,7 @@
 import React, { FC } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
+import { BazarioSmall } from '@/public/BazarioSmall';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -34,12 +35,7 @@ const Footer: FC = () => {
     <footer className="flex h-[314px] w-screen items-center justify-center bg-primary">
       <div className="flex w-[1089px] gap-[294px]">
         <div className="flex w-[299px] flex-col gap-[28px]">
-          <Image
-            src={'@/public/BazarioSmall.svg'}
-            width={58}
-            height={58}
-            alt={'logo'}
-          />
+          <BazarioSmall />
           <Button variant={'secondary'}>Додати оголошення</Button>
           <Button asChild>
             <Link href="/login">Увійти/Зареєструватись</Link>
