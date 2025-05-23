@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
@@ -30,9 +30,13 @@ export default function RootLayout({
       <body
         className={`flex h-full w-screen flex-col items-center bg-secondary ${poppins.variable}`}
       >
-        <Header />
+        <Suspense>
+          <Header />
+        </Suspense>
         <main> {children}</main>
-        <Footer />
+        <Suspense>
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );
