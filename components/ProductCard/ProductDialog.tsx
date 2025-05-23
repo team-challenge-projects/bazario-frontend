@@ -13,6 +13,7 @@ import { FaHryvnia, FaRegStar, FaStar } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { Product } from '@/lib/ProductCard.types';
+import Link from 'next/link';
 
 interface ProductDialogProps {
   data: Product;
@@ -73,7 +74,9 @@ const ProductDialog: FC<ProductDialogProps> = ({ open, setOpen, data }) => {
               </span>
             </p>
           </div>
-          <Button>Переглянути контакти продавця</Button>
+          <Button asChild>
+            <Link href="/product">Переглянути контакти продавця</Link>
+          </Button>
           <div className="flex gap-2">
             <Button variant="ghost" size="icon">
               {!isSelected ? (

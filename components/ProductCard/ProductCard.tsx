@@ -2,7 +2,7 @@
 
 import React, { FC, useState, useRef } from 'react';
 import Image from 'next/image';
-import { FaHryvnia, FaRegStar, FaStar } from 'react-icons/fa';
+import { FaHryvnia } from 'react-icons/fa';
 import ProductDialog from '@/components/ProductCard/ProductDialog';
 import { Product } from '@/lib/ProductCard.types';
 
@@ -15,7 +15,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
   const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
-    hoverTimeout.current = setTimeout(() => setOpen(true), 2000);
+    hoverTimeout.current = setTimeout(() => setOpen(true), 1000);
   };
 
   const handleMouseLeave = () => {
@@ -44,16 +44,6 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
           <span className="flex items-center gap-1">
             {data.price} <FaHryvnia className="size-[15px]" />
           </span>
-        </div>
-        <div className="flex justify-between text-custom-dark-grey font-medium text-[14px] leading-[16px]">
-          <span>{data.date}</span>
-          <div className="flex gap-2 items-center">
-            <div className="relative flex items-center justify-center">
-              <FaRegStar className="size-[18px] absolute" />
-              <FaStar className="size-[17px] text-custom-yellow" />
-            </div>
-            <span>{data.rating}/10</span>
-          </div>
         </div>
       </div>
       <ProductDialog open={open} setOpen={setOpen} data={data} />
