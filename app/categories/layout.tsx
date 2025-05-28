@@ -19,7 +19,7 @@ export default function Layout({ children }: CategoriesPageProps) {
           <CategoriesSidebar />
         </Suspense>
 
-        <main className="w-full">{children}</main>
+        <main>{children}</main>
       </div>
     </div>
   );

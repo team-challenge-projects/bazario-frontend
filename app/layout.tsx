@@ -33,7 +33,7 @@ export default function RootLayout({
         <Suspense>
           <Header />
         </Suspense>
-        <main> {children}</main>
+        <main className="w-screen px-20 py-14"> {children}</main>
         <Suspense>
           <Footer />
         </Suspense>
