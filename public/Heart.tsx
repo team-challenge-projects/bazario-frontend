@@ -3,8 +3,8 @@ export const HeartImage = ({
   height = '24.000000',
   fill = '#000013',
 }: {
-  width: string;
-  height: string;
+  width?: string;
+  height?: string;
   fill?: string;
 }) => (
   <svg

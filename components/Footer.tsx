@@ -3,7 +3,6 @@
 import React, { FC } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
 
-import { BazarioSmall } from '@/public/BazarioSmall';
 import Image from 'next/image';
 import Link from 'next/link';
 

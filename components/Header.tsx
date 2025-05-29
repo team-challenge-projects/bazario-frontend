@@ -5,7 +5,6 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { BazarioSmall } from '@/public/BazarioSmall';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
 import Link from 'next/link';
