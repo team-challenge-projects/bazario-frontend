@@ -1,6 +1,15 @@
 'use client';
 
 import React, { FC, useState } from 'react';
+import { FaHryvnia, FaRegStar, FaStar } from 'react-icons/fa';
+import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { Product } from '@/lib/ProductCard.types';
+
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,12 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import Image from 'next/image';
-import { FaHryvnia, FaRegStar, FaStar } from 'react-icons/fa';
-import { Button } from '@/components/ui/button';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
-import { Product } from '@/lib/ProductCard.types';
-import Link from 'next/link';
 
 interface ProductDialogProps {
   data: Product;
@@ -25,51 +28,51 @@ const ProductDialog: FC<ProductDialogProps> = ({ open, setOpen, data }) => {
   const [isSelected, setIsSelected] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="w-[1064px] h-[587px] rounded-[40px] bg-secondary flex gap-[28px]">
+      <DialogContent className="flex h-[587px] w-[1064px] gap-[28px] rounded-[40px] bg-secondary">
         <Image
           src={data.image}
           alt={data.name}
           width={510}
           height={530}
-          className="rounded-[20px] object-cover w-[510px] h-[530px]"
+          className="h-[530px] w-[510px] rounded-[20px] object-cover"
         />
         <div className="flex flex-1 flex-col gap-3.5">
           <DialogHeader>
-            <DialogTitle className="text-primary font-semibold text-[28px] leading-[42px]">
-              {data.name}
+            <DialogTitle className="text-[28px] font-semibold leading-[42px] text-primary">
+              <Link href={`/products/${data.id}`}> {data.name}</Link>
             </DialogTitle>
-            <DialogDescription className="w-full h-[164px]">
+            <DialogDescription className="h-[164px] w-full">
               Опис товару
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-2">
-            <span className="flex items-center gap-1 text-primary font-semibold text-[28px] leading-[42px]">
+            <span className="flex items-center gap-1 text-[28px] font-semibold leading-[42px] text-primary">
               {data.price} <FaHryvnia className="size-[20px]" />
             </span>
-            <div className="flex gap-2 items-center text-custom-dark-grey font-medium text-[14px] leading-[16px]">
+            <div className="flex items-center gap-2 text-[14px] font-medium leading-[16px] text-custom-dark-grey">
               <div className="relative flex items-center justify-center">
-                <FaRegStar className="size-[18px] absolute" />
+                <FaRegStar className="absolute size-[18px]" />
                 <FaStar className="size-[17px] text-custom-yellow" />
               </div>
               <span>{data.rating}/10</span>
             </div>
           </div>
           <div className="flex flex-col gap-2">
-            <p className="text-primary font-semibold text-[18px] leading-[27px]">
+            <p className="text-[18px] font-semibold leading-[27px] text-primary">
               Спосіб доставки:{' '}
-              <span className="font-medium text-[18px] leading-[22px]">
+              <span className="text-[18px] font-medium leading-[22px]">
                 Самовивіз
               </span>
             </p>
-            <p className="text-primary font-semibold text-[18px] leading-[27px]">
+            <p className="text-[18px] font-semibold leading-[27px] text-primary">
               Місцезнаходження:{' '}
-              <span className="font-medium text-[18px] leading-[22px]">
+              <span className="text-[18px] font-medium leading-[22px]">
                 Львів, Львівська обл.
               </span>
             </p>
-            <p className="text-primary font-semibold text-[18px] leading-[27px]">
+            <p className="text-[18px] font-semibold leading-[27px] text-primary">
               Дата публікації:{' '}
-              <span className="font-medium text-[18px] leading-[22px]">
+              <span className="text-[18px] font-medium leading-[22px]">
                 {data.date}
               </span>
             </p>
@@ -94,7 +97,7 @@ const ProductDialog: FC<ProductDialogProps> = ({ open, setOpen, data }) => {
                 </div>
               )}
             </Button>
-            <span className="text-primary font-medium text-[20px] leading-[30px]">
+            <span className="text-[20px] font-medium leading-[30px] text-primary">
               {isSelected ? 'Товар у обраному' : 'Додати товар до обраного'}
             </span>
           </div>

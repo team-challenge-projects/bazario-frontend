@@ -1,12 +1,15 @@
 import React from 'react';
 
-import GoodSmallCard from './GoodSmallCard';
+import { Product } from '@/lib/ProductCard.types';
 
-const GoodsList = () => {
+import ProductCard from './ProductCard/ProductCard';
+
+// Adjust the import path as necessary for your project
+const GoodsList = ({ products }: { products: Product[] }) => {
   return (
     <div className="3 mb-28 grid w-full grid-cols-1 gap-x-6 gap-y-4 lg:grid-cols-2 xl:grid-cols-3 full:grid-cols-4">
-      {[...Array(16).keys()].map((item) => (
-        <GoodSmallCard key={item} />
+      {products.map((item) => (
+        <ProductCard data={item} key={item.id} />
       ))}
     </div>
   );

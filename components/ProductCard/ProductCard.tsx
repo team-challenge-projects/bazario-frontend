@@ -1,10 +1,13 @@
 'use client';
 
-import React, { FC, useState, useRef } from 'react';
-import Image from 'next/image';
+import React, { FC, useRef, useState } from 'react';
 import { FaHryvnia } from 'react-icons/fa';
-import ProductDialog from '@/components/ProductCard/ProductDialog';
+
+import Image from 'next/image';
+
 import { Product } from '@/lib/ProductCard.types';
+
+import ProductDialog from '@/components/ProductCard/ProductDialog';
 
 interface ProductCardProps {
   data: Product;
@@ -27,7 +30,7 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
 
   return (
     <div
-      className="w-[303px] h-[269px] flex flex-col rounded-t-[20px] gap-2"
+      className="flex h-[269px] w-[303px] flex-col gap-2 rounded-t-[20px]"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -36,10 +39,10 @@ const ProductCard: FC<ProductCardProps> = ({ data }) => {
         width={303}
         height={206}
         alt={data.name}
-        className="w-full h-[206px] rounded-[20px] object-cover"
+        className="h-[206px] w-full rounded-[20px] object-cover"
       />
-      <div className="w-full flex flex-col gap-1">
-        <div className="flex justify-between text-primary font-semibold text-[18px] leading-[27px]">
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex justify-between text-[18px] font-semibold leading-[27px] text-primary">
           <span>{data.name}</span>
           <span className="flex items-center gap-1">
             {data.price} <FaHryvnia className="size-[15px]" />

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 
 import { PlusInCircleIcon } from '@/public/PlusInCircleIcon';
-import { DivideSquareIcon } from 'lucide-react';
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
