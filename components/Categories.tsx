@@ -10,7 +10,7 @@ const Categories: FC = () => {
   const [hovered, setHovered] = useState<number | null>();
   const [selected, setSelected] = useState<number | null>();
   return (
-    <div className="my-[56px] flex flex-col gap-[14px] sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1282px] full:w-[1760px]">
+    <div className="my-[56px] flex flex-col gap-[14px] sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1282px] full:w-[1760px] ">
       <p className="text-[28px] font-semibold leading-[42px] text-primary">
         Категорії
       </p>
