@@ -15,11 +15,14 @@ import Input from '@/components/common/Input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
+import ProfileList from './ProfileList';
+
 const Header: FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   const pathname = usePathname();
-  const [isAuthenticated] = useState(false);
+  const [isAuthenticated] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
 
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
@@ -55,7 +58,7 @@ const Header: FC = () => {
           ) : null}
         </div>
         <div className="flex items-center gap-7 sm:hidden lg:flex">
-          <div className="flex gap-[14px]">
+          <div className="relative flex gap-[14px]">
             <Button variant="ghost" size="icon">
               {!isSelected ? (
                 <IoMdHeartEmpty
@@ -73,7 +76,7 @@ const Header: FC = () => {
               )}
             </Button>
             {isAuthenticated ? (
-              <Avatar>
+              <Avatar onClick={() => setIsAvatarClicked((prev) => !prev)}>
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
@@ -82,6 +85,7 @@ const Header: FC = () => {
                 <HiOutlineUser className="h-8 w-8" />
               </Button>
             )}
+            {isAuthenticated && isAvatarClicked && <ProfileList />}
           </div>
           <div className="flex gap-3.5">
             <Button>Додати оголошення</Button>
