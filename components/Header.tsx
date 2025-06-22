@@ -23,6 +23,9 @@ const Header: FC = () => {
   const [isAuthenticated] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
+  const handleOnListClick = () => {
+    setIsAvatarClicked(false);
+  };
 
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
@@ -85,7 +88,9 @@ const Header: FC = () => {
                 <HiOutlineUser className="h-8 w-8" />
               </Button>
             )}
-            {isAuthenticated && isAvatarClicked && <ProfileList />}
+            {isAuthenticated && isAvatarClicked && (
+              <ProfileList isClickedList={handleOnListClick} />
+            )}
           </div>
           <div className="flex gap-3.5">
             <Button>Додати оголошення</Button>

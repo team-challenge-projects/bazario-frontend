@@ -3,7 +3,11 @@ import { FC } from 'react';
 import { Exit } from '@/public/Exit';
 import Link from 'next/link';
 
-const ProfileList: FC = () => {
+interface ProfileListProps {
+  isClickedList: () => void;
+}
+
+const ProfileList: FC<ProfileListProps> = ({ isClickedList }) => {
   const points = [
     { id: 1, title: 'Налаштування профілю', link: '/profile/1' },
     { id: 2, title: 'Мої оголошення', link: '/' },
@@ -18,8 +22,9 @@ const ProfileList: FC = () => {
         <li
           key={id}
           className={`w-fit cursor-pointer text-nowrap ${id === 5 && 'text-custom-dark-grey'}`}
+          onClick={isClickedList}
         >
-          <Link href={link} className="flex items-center gap-2">
+          <Link href={link} className="flex items-center gap-2 ">
             {id === 5 && <Exit />} {title}
           </Link>
         </li>
