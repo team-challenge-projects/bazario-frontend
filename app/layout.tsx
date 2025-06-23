@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <body
-        className={`flex h-full w-screen flex-col items-center bg-secondary ${poppins.variable}`}
+        className={`flex h-full w-screen flex-col items-center bg-custom-light-mint ${poppins.variable}`}
       >
         <Suspense>
           <Header />
