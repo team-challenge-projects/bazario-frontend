@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Exit } from '@/public/Exit';
 import { useRouter } from 'next/navigation';
 
-import { ProfileContacts } from '@/components/ProfileContacts';
+import { ProfileForm } from '@/components/ProfileForm';
 import { ProfileManagement } from '@/components/ProfileManagement';
 import { ProfileMessages } from '@/components/ProfileMessages';
 import { StartProfilePage } from '@/components/StartProfilePage';
@@ -43,7 +43,7 @@ const Profile = () => {
 
   const profileOptions = [
     <StartProfilePage />,
-    <ProfileContacts />,
+    <ProfileForm />,
     <ProfileMessages />,
     <ProfileManagement />,
   ];
@@ -56,7 +56,7 @@ const Profile = () => {
           {buttonsData.map((item, index) => (
             <Button
               key={item.title}
-              className={`shadow-secondaryShadow rounded-lg bg-custom-light-mint px-5 py-[0.875rem] text-xl font-semibold text-custom-black last:text-custom-dark-grey hover:text-custom-light-mint ${isChecked === item.id && item.id !== 4 && 'h-[116px] bg-[#d9d9d9]'}`}
+              className={`shadow-secondaryShadow rounded-lg bg-custom-light-mint px-5 py-[0.875rem] text-xl font-semibold text-custom-black last:text-custom-dark-grey hover:text-custom-light-mint ${isChecked === item.id && item.id !== 4 && 'h-[116px] bg-white'}`}
               onClick={() => item.handleOnClick(item.id)}
             >
               {index === buttonsData.length - 1 && <Exit />}

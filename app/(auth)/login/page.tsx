@@ -1,17 +1,20 @@
 'use client';
 
 import React, { FC } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { z } from 'zod';
 
 import { loginSchema } from '@/lib/validateSchema';
-import axios from 'axios';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { IUser } from '@/types/user';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -27,50 +30,61 @@ const Login: FC = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await loginUser(data);
-      await getUserInformation(data);
+      const accessToken = await loginUser(data);
+      const user = await getUserInformation(accessToken);
+      // Записуємо у localStorage
+      localStorage.setItem('accessToken', accessToken);
+      // Зберігаємо user як JSON рядок
+      localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.log(error);
     }
+    reset();
   };
 
-  const loginUser = async (userData: LoginFormData) => {
-    console.log('✅ Отправляемые данные:', userData);
+  const loginUser = async (userData: LoginFormData): Promise<string> => {
+    console.log('✅ Відправлені дані:', userData);
     try {
-      const response = await axios.post(
+      const response = await axios.post<string>(
         'https://bazario-mkur.onrender.com/api/anonymous/login',
         userData,
       );
-      console.log('🎉 Успешный вход:', response.data);
-      reset();
+      console.log('🎉 Успішний вхід:', response.data);
+      return response.data;
     } catch {
-      console.error('❌ Ошибка входа:');
+      console.error('❌ Помилка входу:');
+      return '';
     }
   };
 
-  const getUserInformation = async (userData: LoginFormData) => {
+  const getUserInformation = async (
+    accessToken: string,
+  ): Promise<IUser | undefined> => {
     try {
-      const response = await axios.get(
+      const response = await axios.get<IUser>(
         'https://bazario-mkur.onrender.com/api/private/user',
         {
-          params: userData,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
         },
       );
-      console.log(response);
+      return response.data;
     } catch (error) {
-      console.error('❌ Ошибка получения информации о пользователе:', error);
+      console.error('❌ Помилка отримання інформації про користувача:', error);
+      return undefined;
     }
   };
 
   return (
-    <div className="flex md:h-[900px] sm:h-full sm:py-[56px] w-screen items-center justify-center bg-custom-half-dark-grey">
-      <div className="flex xl:h-[745px] xl:w-[906px] lg:w-[906px] lg:h-[735px] md:h-[712px] md:w-[727px] sm:h-full sm:w-[335px] justify-center py-[56px] rounded-[40px] bg-secondary">
-        <div className="flex xl:h-[449px] xl:w-[794px] flex-col items-center gap-7">
+    <div className="flex w-screen items-center justify-center bg-custom-half-dark-grey sm:h-full sm:py-[56px] md:h-[900px]">
+      <div className="flex justify-center rounded-[40px] bg-secondary py-[56px] sm:h-full sm:w-[335px] md:h-[712px] md:w-[727px] lg:h-[735px] lg:w-[906px] xl:h-[745px] xl:w-[906px]">
+        <div className="flex flex-col items-center gap-7 xl:h-[449px] xl:w-[794px]">
           <Image src="/BazarioBig.svg" alt="logo" width={106} height={106} />
-          <div className="flex lg:gap-14 sm:gap-4 md:flex-row sm:flex-col">
+          <div className="flex sm:flex-col sm:gap-4 md:flex-row lg:gap-14">
             <form
-              onSubmit={void handleSubmit(onSubmit)}
-              className="flex lg:w-[443px] md:w-[360px] sm:w-[303px] flex-col gap-[28px]"
+              onSubmit={handleSubmit(onSubmit)}
+              className="flex flex-col gap-[28px] sm:w-[303px] md:w-[360px] lg:w-[443px]"
             >
               <p className="text-[28px] font-semibold leading-[42px] text-primary">
                 Вхід
