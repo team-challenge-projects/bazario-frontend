@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
+import { IUser } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
@@ -13,7 +14,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
@@ -21,21 +21,27 @@ const formSchema = z.object({
   username: z.string().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
+  phone: z.string(),
+  email: z.string(),
+  messengerPhone: z.string(),
+  telegram: z.string(),
+  address: z.string(),
 });
 
-export function ProfileForm() {
-  // 1. Define your form.
+export function ProfileForm({ user }: { user: IUser }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      username: `${user.firstName} ${user.lastName}` || '',
+      phone: user.phoneNumber || '',
+      email: user.email || '',
+      messengerPhone: '',
+      telegram: '',
+      address: '',
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
@@ -53,29 +59,68 @@ export function ProfileForm() {
               <FormLabel>Основна інформація</FormLabel>
               <FormControl>
                 <Input placeholder="Ваше ім'я..." {...field} />
-              </FormControl>{' '}
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
               <FormControl>
                 <Input placeholder="Ваш номер телефону..." {...field} />
-              </FormControl>{' '}
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
               <FormControl>
                 <Input placeholder="Ваша пошта..." {...field} />
               </FormControl>
-              <FormLabel>Додати месенджери</FormLabel>
+            </FormItem>
+          )}
+        />
+        <FormLabel>Додати месенджери</FormLabel>
+        <FormField
+          control={form.control}
+          name="messengerPhone"
+          render={({ field }) => (
+            <FormItem>
               <FormControl>
                 <Input placeholder="+380661234567" {...field} />
               </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="telegram"
+          render={({ field }) => (
+            <FormItem>
               <FormControl>
                 <Input placeholder="@telegram" {...field} />
               </FormControl>
-              <FormLabel>Фізична адреса</FormLabel>
+            </FormItem>
+          )}
+        />
+        <FormLabel>Фізична адреса</FormLabel>
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
               <FormDescription>
                 Додайте адресу, щоб бачити відстань до продавців і легше обирати
                 найзручніший варіант для покупки.
-              </FormDescription>{' '}
+              </FormDescription>
               <FormControl>
                 <Input placeholder="Ваша адреса..." {...field} />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />

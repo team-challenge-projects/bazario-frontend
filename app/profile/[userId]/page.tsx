@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 import { Exit } from '@/public/Exit';
+import { IUser } from '@/types/user';
 import { useRouter } from 'next/navigation';
 
 import { ProfileForm } from '@/components/ProfileForm';
@@ -40,10 +41,11 @@ const Profile = () => {
       handleOnClick: () => router.push('/'),
     },
   ];
+  const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
 
   const profileOptions = [
     <StartProfilePage />,
-    <ProfileForm />,
+    <ProfileForm user={user} />,
     <ProfileMessages />,
     <ProfileManagement />,
   ];
@@ -51,7 +53,7 @@ const Profile = () => {
   return (
     <div className="grid min-h-[calc(100vh-314px-86px)] w-full grid-cols-[1fr_2fr] gap-4 p-4 xl:w-[1280px]">
       <div className="row-span-2">
-        <div>Header</div>
+        <div>{user?.firstName}</div>
         <div className="flex flex-col gap-4 p-4">
           {buttonsData.map((item, index) => (
             <Button
