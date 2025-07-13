@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, use, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import { registerSchema } from '@/lib/validateSchema';
@@ -40,7 +39,6 @@ const Register: FC = () => {
   });
   const [isRegistered, setIsRegistered] = useState(false);
   const [emailForConfirmation, setEmailForConfirmation] = useState('');
-  const router = useRouter();
   const now = new Date();
   now.setSeconds(now.getSeconds() + 30);
 
@@ -49,10 +47,6 @@ const Register: FC = () => {
     try {
       await registerUser(cleanedData);
       await sendVerificationEmail(cleanedData.email);
-      router.push(
-        `/verify-email?isWaitingForConfirmation=true&emailAddress=` +
-          encodeURIComponent(cleanedData.email),
-      );
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +56,6 @@ const Register: FC = () => {
     userData: Omit<RegisterFormData, 'accept' | 'repeatPassword'>,
   ) => {
     try {
-      console.log('✅ Отправляемые данные:', userData);
       const response = await axios.post(
         'https://bazario-mkur.onrender.com/api/anonymous/registration',
         userData,

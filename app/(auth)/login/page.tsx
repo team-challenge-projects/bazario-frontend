@@ -1,7 +1,7 @@
 'use client';
 
 import React, { FC } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
 import { IUser } from '@/types/user';

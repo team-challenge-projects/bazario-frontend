@@ -13,8 +13,6 @@ export const VerifyContent: FC = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const isWaitingForConfirmation = searchParams.get('isWaitingForConfirmation');
-  const emailAddress = searchParams.get('emailAddress');
   useEffect(() => {
     const verifyEmail = async () => {
       try {
@@ -52,9 +50,7 @@ export const VerifyContent: FC = () => {
       }
     };
 
-    if (!isWaitingForConfirmation) {
-      void verifyEmail();
-    }
+    void verifyEmail();
   }, [searchParams]);
 
   if (isLoading) {
@@ -64,9 +60,7 @@ export const VerifyContent: FC = () => {
           <Image src="/BazarioBig.svg" alt="logo" width={106} height={106} />
           <div className="flex h-[224px] w-full flex-col items-center justify-center">
             <p className="text-center text-[28px] font-semibold leading-[42px] text-primary">
-              {isWaitingForConfirmation
-                ? `Очікування підтвердження з поштової скриньки ${emailAddress}`
-                : 'Перевірка email...'}
+              Перевірка email...
             </p>
           </div>
         </div>

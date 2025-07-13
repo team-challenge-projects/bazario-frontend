@@ -6,7 +6,7 @@ import { Exit } from '@/public/Exit';
 import { IUser } from '@/types/user';
 import { useRouter } from 'next/navigation';
 
-import { ProfileForm } from '@/components/ProfileForm';
+import { ProfileForm } from '@/components/ProfileForm/ProfileForm';
 import { ProfileManagement } from '@/components/ProfileManagement';
 import { ProfileMessages } from '@/components/ProfileMessages';
 import { StartProfilePage } from '@/components/StartProfilePage';
