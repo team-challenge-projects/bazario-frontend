@@ -8,13 +8,7 @@ import Image from 'next/image';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
 import { Switch } from '../ui/switch';
@@ -23,11 +17,11 @@ const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: 'Username must be at least 2 characters.' }),
-  phone: z.string(),
-  email: z.string(),
+  phoneNumber: z.string(),
+  email: z.string().email(),
   messengerPhone: z.string(),
   telegram: z.string(),
-  address: z.string(),
+  cityName: z.string(),
 });
 
 export function ProfileForm({ user }: { user: IUser }) {
@@ -36,9 +30,9 @@ export function ProfileForm({ user }: { user: IUser }) {
     resolver: zodResolver(formSchema.pick({ username: true })),
     defaultValues: { username: `${user.firstName} ${user.lastName}` || '' },
   });
-  const phoneForm = useForm<{ phone: string }>({
-    resolver: zodResolver(formSchema.pick({ phone: true })),
-    defaultValues: { phone: user.phoneNumber || '' },
+  const phoneForm = useForm<{ phoneNumber: string }>({
+    resolver: zodResolver(formSchema.pick({ phoneNumber: true })),
+    defaultValues: { phoneNumber: user.phoneNumber || '' },
   });
   const emailForm = useForm<{ email: string }>({
     resolver: zodResolver(formSchema.pick({ email: true })),
@@ -52,75 +46,100 @@ export function ProfileForm({ user }: { user: IUser }) {
     resolver: zodResolver(formSchema.pick({ telegram: true })),
     defaultValues: { telegram: '' },
   });
-  const addressForm = useForm<{ address: string }>({
-    resolver: zodResolver(formSchema.pick({ address: true })),
-    defaultValues: { address: '' },
+  const addressForm = useForm<{ cityName: string }>({
+    resolver: zodResolver(formSchema.pick({ cityName: true })),
+    defaultValues: { cityName: '' },
   });
-  const handleSubmitForm = (data: {
+  const handleSubmitForm = async (data: {
     username?: string;
-    phone?: string;
+    phoneNumber?: string;
     email?: string;
     messengerPhone?: string;
     telegram?: string;
-    address?: string;
+    cityName?: string;
   }) => {
     console.log('Submitted data:', data);
+    const response = await fetch(
+      'https://bazario-mkur.onrender.com/api/private/user',
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        body: JSON.stringify(data),
+      },
+    );
+    if (!response.ok) {
+      throw new Error('Failed to update profile');
+    }
+    const updatedUser = (await response.json()) as IUser;
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    console.log('Profile updated successfully:', updatedUser);
+    // Тут можна додати логіку для оновлення стану або UI після успіш
   };
   return (
     <div className="w-[847px] space-y-8 rounded-[20px] border border-solid border-custom-light-grey bg-white px-20 py-14 shadow-[0px_4px_4px_-1px_rgba(12,_12,_13,_0.05)]">
       {/* Username */}
-      <Form {...usernameForm}>
-        <form
-          onSubmit={usernameForm.handleSubmit(handleSubmitForm)}
-          className="flex items-end gap-2"
-        >
-          <FormField
-            control={usernameForm.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Основна інформація</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ваше ім'я..."
-                    {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-        </form>
-      </Form>
+      <div>
+        <h2 className="mb-4 text-2xl font-semibold">Основна інформація</h2>
+
+        <Form {...usernameForm}>
+          <form
+            onSubmit={usernameForm.handleSubmit(handleSubmitForm)}
+            className="flex items-end gap-2"
+          >
+            <FormField
+              control={usernameForm.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input
+                      error={usernameForm.formState.errors?.username?.message}
+                      placeholder="Ваше ім'я..."
+                      {...field}
+                      className="input-user-contact-data"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+          </form>
+        </Form>
+      </div>
       {/* Phone */}
       <Form {...phoneForm}>
         <form
           onSubmit={phoneForm.handleSubmit(handleSubmitForm)}
-          className="flex items-end gap-2"
+          className="flex items-center gap-2"
         >
           <FormField
             control={phoneForm.control}
-            name="phone"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
                   <Input
+                    error={phoneForm.formState.errors?.phoneNumber?.message}
                     placeholder="Ваш номер телефону..."
                     {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
+                    className="input-user-contact-data"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit">Зберегти</Button>
+          <Button className="button-user-contact-data" type="submit">
+            Додати
+          </Button>
         </form>
       </Form>
       {/* Email */}
       <Form {...emailForm}>
         <form
           onSubmit={emailForm.handleSubmit(handleSubmitForm)}
-          className="flex items-end gap-2"
+          className="flex items-center gap-2"
         >
           <FormField
             control={emailForm.control}
@@ -130,14 +149,17 @@ export function ProfileForm({ user }: { user: IUser }) {
                 <FormControl>
                   <Input
                     placeholder="Ваша пошта..."
+                    error={emailForm.formState.errors?.email?.message}
                     {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
+                    className="input-user-contact-data"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit">Зберегти</Button>
+          <Button className="button-user-contact-data" type="submit">
+            Змінити
+          </Button>
         </form>
       </Form>
       {/* Messenger Phone */}
@@ -156,15 +178,20 @@ export function ProfileForm({ user }: { user: IUser }) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
+                    error={
+                      messengerPhoneForm.formState.errors?.messengerPhone
+                        ?.message
+                    }
                     placeholder="+380661234567"
                     {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
+                    className="input-user-contact-data"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
           <Switch
+            className="switch-style h-[30px] w-14 border border-custom-half-dark-grey data-[state=checked]:bg-white data-[state=unchecked]:bg-white"
             onCheckedChange={(checked) => {
               if (checked) {
                 void messengerPhoneForm.handleSubmit(handleSubmitForm)();
@@ -195,15 +222,17 @@ export function ProfileForm({ user }: { user: IUser }) {
               <FormItem className="w-full">
                 <FormControl>
                   <Input
+                    error={telegramForm.formState.errors?.telegram?.message}
                     placeholder="@telegram"
                     {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
+                    className="input-user-contact-data"
                   />
                 </FormControl>
               </FormItem>
             )}
           />
           <Switch
+            className="switch-style h-[30px] w-14 border border-custom-half-dark-grey data-[state=checked]:bg-white data-[state=unchecked]:bg-white"
             onCheckedChange={(checked) => {
               if (checked) {
                 void telegramForm.handleSubmit(handleSubmitForm)();
@@ -216,30 +245,39 @@ export function ProfileForm({ user }: { user: IUser }) {
         </form>
       </Form>
       {/* Address */}
-      <Form {...addressForm}>
-        <form
-          onSubmit={addressForm.handleSubmit(handleSubmitForm)}
-          className="flex items-end gap-2"
-        >
-          <FormField
-            control={addressForm.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Фізична адреса</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ваша адреса..."
-                    {...field}
-                    className="rounded-[40px] border-custom-half-dark-grey px-5 py-4"
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Зберегти</Button>
-        </form>
-      </Form>
+      <div>
+        <h2 className="mb-2 text-2xl font-semibold">Фізична адреса</h2>
+        <p className="mb-4 text-base font-normal">
+          Додайте адресу, щоб бачити відстань до продавців і легше обирати
+          найзручніший варіант для покупки
+        </p>
+        <Form {...addressForm}>
+          <form
+            onSubmit={addressForm.handleSubmit(handleSubmitForm)}
+            className="flex items-center gap-2"
+          >
+            <FormField
+              control={addressForm.control}
+              name="cityName"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <Input
+                      error={addressForm.formState.errors?.cityName?.message}
+                      placeholder="Ваша адреса..."
+                      {...field}
+                      className="input-user-contact-data"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button className="button-user-contact-data" type="submit">
+              Додати
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }

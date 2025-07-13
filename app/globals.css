@@ -96,3 +96,16 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.switch-style[data-state='checked'] > span {
+  @apply h-7 w-7 translate-x-7 bg-custom-mint;
+}
+.switch-style[data-state='unchecked'] > span {
+  @apply h-7 w-7 bg-custom-light-grey;
+}
+.input-user-contact-data {
+  @apply h-[59px] rounded-[40px] border-custom-half-dark-grey px-5 py-4 text-lg font-semibold;
+}
+.button-user-contact-data {
+  @apply h-[58px] rounded-[20px] bg-custom-black px-[14px] py-5 text-xl font-semibold;
+}
