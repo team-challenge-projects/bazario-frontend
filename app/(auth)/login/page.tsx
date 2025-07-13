@@ -1,20 +1,21 @@
 'use client';
 
 import React, { FC } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
+import { IUser } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
 import { loginSchema } from '@/lib/validateSchema';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { IUser } from '@/types/user';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -27,15 +28,17 @@ const Login: FC = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
+  const router = useRouter();
   const onSubmit = async (data: LoginFormData) => {
     try {
       const accessToken = await loginUser(data);
       const user = await getUserInformation(accessToken);
+      const userId = user?.id;
       // Записуємо у localStorage
       localStorage.setItem('accessToken', accessToken);
       // Зберігаємо user як JSON рядок
       localStorage.setItem('user', JSON.stringify(user));
+      router.push(`/profile/${userId}`);
     } catch (error) {
       console.log(error);
     }
