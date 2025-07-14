@@ -67,7 +67,7 @@ const Register: FC = () => {
         setIsRegistered(true);
       }
     } catch (error) {
-      console.error('❌ Ошибка регистрации:', error);
+      console.error('❌ Registration error:', error);
       throw error;
     }
   };
@@ -80,7 +80,7 @@ const Register: FC = () => {
       );
       console.log(response);
     } catch (error) {
-      console.error('❌ Ошибка отправки подтверждения:', error);
+      console.error('❌ Verification email error:', error);
     }
   };
 
