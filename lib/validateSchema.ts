@@ -8,7 +8,7 @@ const accept = z.boolean().refine((data) => data, {
 const email = z
   .string({ required_error: 'Це поле є обов`язковим.' })
   .min(1, 'Це поле є обов`язковим.')
-  .max(30, 'максимальна кількість символів 30')
+  .max(70, 'максимальна кількість символів 70')
   .email('Неправильний формат електронної пошти');
 
 const password = z
