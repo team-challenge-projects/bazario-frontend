@@ -7,7 +7,6 @@ import { IoSearchOutline } from 'react-icons/io5';
 
 import { IUser } from '@/types/user';
 import Hamburger from 'hamburger-react';
-import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
