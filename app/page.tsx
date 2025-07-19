@@ -1,11 +1,12 @@
 'use client';
+
 import { Suspense } from 'react';
 
 import { products } from '@/utils/fakeData';
+import { usePathname } from 'next/navigation';
 
 import Categories from '@/components/Categories';
 import GoodsList from '@/components/GoodsList';
-import { usePathname } from 'next/navigation';
 
 export default function Home() {
   const pathname = usePathname();
@@ -14,7 +15,7 @@ export default function Home() {
 
   return (
     <div
-      className={`flex-col w-screen ${isPaddingsHidden ? '' : 'px-20 py-14'}`}
+      className={`w-screen flex-col ${isPaddingsHidden ? '' : 'px-20 py-14'}`}
     >
       <Suspense>
         <Categories />
