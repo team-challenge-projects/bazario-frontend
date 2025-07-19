@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ChangeIcon } from '@/public/ChangeIcon';
 import { Exit } from '@/public/Exit';
@@ -15,7 +15,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
 const Profile = () => {
-  const [isChecked, setIsChecked] = useState(0);
+  const [isChecked, setIsChecked] = useState(false);
+  const [user, setUser] = useState({} as IUser);
   const router = useRouter();
   const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
   // const handleOnListClick = () => {
@@ -48,7 +49,11 @@ const Profile = () => {
       handleOnClick: () => router.push('/'),
     },
   ];
-  const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
+
+    setUser(user);
+  }, [user]);
 
   const profileOptions = [
     <StartProfilePage />,
