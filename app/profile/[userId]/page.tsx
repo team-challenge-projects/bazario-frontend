@@ -47,9 +47,13 @@ const Profile = () => {
     },
   ];
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
-
-    setUser(user);
+    const user = localStorage.getItem('user');
+    if (!user) {
+      router.push('/login');
+    } else {
+      const parsedUser = JSON.parse(user) as IUser;
+      setUser(parsedUser);
+    }
   }, []);
 
   const profileOptions = [

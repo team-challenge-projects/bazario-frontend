@@ -6,7 +6,6 @@ import { FcGoogle } from 'react-icons/fc';
 
 import { IUser } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -31,11 +30,10 @@ const Login: FC = () => {
   const router = useRouter();
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const accessToken = await loginUser(data);
-      const user = await getUserInformation(accessToken);
+      const response = await loginUser(data);
+      const user = await getUserInformation();
       const userId = user?.id;
-      // Записуємо у localStorage
-      localStorage.setItem('accessToken', accessToken);
+      console.log('✅ Відповідь сервера:', response);
       // Зберігаємо user як JSON рядок
       localStorage.setItem('user', JSON.stringify(user));
       router.push(`/profile/${userId}`);
@@ -48,31 +46,28 @@ const Login: FC = () => {
   const loginUser = async (userData: LoginFormData): Promise<string> => {
     console.log('✅ Відправлені дані:', userData);
     try {
-      const response = await axios.post<string>(
-        'https://bazario-mkur.onrender.com/api/anonymous/login',
-        userData,
-      );
-      console.log('🎉 Успішний вхід:', response.data);
-      return response.data;
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+        credentials: 'include',
+      });
+      console.log('🎉 Успішний вхід:', response);
+      return response.statusText;
     } catch {
       console.error('❌ Помилка входу:');
       return '';
     }
   };
 
-  const getUserInformation = async (
-    accessToken: string,
-  ): Promise<IUser | undefined> => {
+  const getUserInformation = async (): Promise<IUser | undefined> => {
     try {
-      const response = await axios.get<IUser>(
-        'https://bazario-mkur.onrender.com/api/private/user',
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      return response.data;
+      const response = await fetch('/api/user');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = (await response.json()) as IUser;
+      return data; // Cast the data to IUser
     } catch (error) {
       console.error('❌ Помилка отримання інформації про користувача:', error);
       return undefined;

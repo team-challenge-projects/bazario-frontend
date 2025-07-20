@@ -32,11 +32,11 @@ const Header: FC = () => {
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
   const [user, setUser] = useState({} as IUser);
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
+  // useEffect(() => {
+  //   const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
 
-    setUser(user);
-  }, []);
+  //   setUser(user);
+  // }, []);
 
   return (
     <header
