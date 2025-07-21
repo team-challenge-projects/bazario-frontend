@@ -48,7 +48,7 @@ const Profile = () => {
   ];
   useEffect(() => {
     const user = localStorage.getItem('user');
-    if (!user) {
+    if (!user || user === 'undefined') {
       router.push('/login');
     } else {
       const parsedUser = JSON.parse(user) as IUser;

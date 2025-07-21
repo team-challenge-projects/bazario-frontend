@@ -59,17 +59,13 @@ export function ProfileForm({ user }: { user: IUser }) {
     cityName?: string;
   }) => {
     console.log('Submitted data:', data);
-    const response = await fetch(
-      'https://bazario-mkur.onrender.com/api/private/user',
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        body: JSON.stringify(data),
+    const response = await fetch('/api/user', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(data),
+    });
     if (!response.ok) {
       throw new Error('Failed to update profile');
     }

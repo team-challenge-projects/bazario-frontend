@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, use, useEffect, useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
@@ -31,12 +31,14 @@ const Header: FC = () => {
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
   const [user, setUser] = useState({} as IUser);
+  useEffect(() => {
+    const user = localStorage.getItem('user');
 
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem('user') || '{}') as IUser;
-
-  //   setUser(user);
-  // }, []);
+    if (user && user !== 'undefined') {
+      const parsedUser = JSON.parse(user) as IUser;
+      setUser(parsedUser);
+    }
+  }, []);
 
   return (
     <header

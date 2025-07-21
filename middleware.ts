@@ -4,7 +4,7 @@ export async function middleware(req: NextRequest) {
   const accessToken = req.cookies.get('accessToken')?.value;
   const refreshToken = req.cookies.get('refreshToken')?.value;
   // 🔓 Якщо є accessToken — пропускаємо
-  if (accessToken) return NextResponse.next();
+  if (accessToken && !isTokenExpired(accessToken)) return NextResponse.next();
 
   // ❌ Якщо немає refreshToken — редирект на login
   if (!refreshToken) {
@@ -25,12 +25,10 @@ export async function middleware(req: NextRequest) {
 
   // ⛳ Отримуємо новий токен з відповіді
   const newAccessToken = await refreshRes.text();
-
   const res = NextResponse.next();
   res.cookies.set('accessToken', newAccessToken, {
     httpOnly: true,
     path: '/',
-    maxAge: 60 * 15,
     sameSite: 'strict',
     secure: true,
   });
@@ -42,3 +40,12 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/profile/:path*'],
 };
+function isTokenExpired(token: string): boolean {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1])) as { exp: number };
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp < now;
+  } catch {
+    return true;
+  }
+}

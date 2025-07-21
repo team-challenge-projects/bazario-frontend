@@ -20,19 +20,23 @@ export async function POST(req: NextRequest) {
     );
   }
   const accessToken = await externalRes.text();
+  if (accessToken) {
+    const payload = JSON.parse(atob(accessToken.split('.')[1])) as {
+      exp: number;
+    };
+    const exp = payload.exp; // Unix timestamp (секунди)
+
+    // const expiresAt = new Date(exp * 1000);
+    console.log('Токен дійсний до:', exp);
+  }
   const refreshToken = externalRes.headers
     .getSetCookie?.()[0]
     .split(';')[0]
-    .split('=')[1];
-  const maxAge = externalRes.headers
-    .getSetCookie?.()[0]
-    .split(';')[2]
     .split('=')[1];
 
   const res = NextResponse.json({ message: 'Login successful' });
   res.cookies.set('accessToken', accessToken, {
     httpOnly: true,
-    maxAge: 60 * 15, // 15 хв
     secure: true,
     sameSite: 'strict',
     path: '/',
@@ -40,7 +44,6 @@ export async function POST(req: NextRequest) {
 
   res.cookies.set('refreshToken', refreshToken, {
     httpOnly: true,
-    maxAge: parseInt(maxAge),
     secure: true,
     sameSite: 'strict',
     path: '/',

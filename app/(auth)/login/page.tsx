@@ -4,13 +4,13 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
-import { IUser } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
+import { getUserInformation } from '@/lib/api/getUserInformation';
 import { loginSchema } from '@/lib/validateSchema';
 
 import { Button } from '@/components/ui/button';
@@ -57,20 +57,6 @@ const Login: FC = () => {
     } catch {
       console.error('❌ Помилка входу:');
       return '';
-    }
-  };
-
-  const getUserInformation = async (): Promise<IUser | undefined> => {
-    try {
-      const response = await fetch('/api/user');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = (await response.json()) as IUser;
-      return data; // Cast the data to IUser
-    } catch (error) {
-      console.error('❌ Помилка отримання інформації про користувача:', error);
-      return undefined;
     }
   };
 

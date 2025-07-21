@@ -8,7 +8,10 @@ import {
   useDropzone,
 } from 'react-dropzone';
 
+import { IUser } from '@/types/user';
 import Image from 'next/image';
+
+import { getUserInformation } from '@/lib/api/getUserInformation';
 
 import { Button } from '@/components/ui/button';
 
@@ -33,7 +36,6 @@ export function ImageDropzone({
     },
     [],
   );
-
   const {
     getRootProps,
     getInputProps,
@@ -54,21 +56,20 @@ export function ImageDropzone({
     const formData = new FormData();
     formData.append('file', file);
 
-    const res = await fetch(
-      `https://bazario-mkur.onrender.com/api/image/AVATAR/${id}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        credentials: 'include',
-        body: formData,
-      },
-    );
+    const res = await fetch(`/api/upload/${id}`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
 
-    const data: { url: string } = (await res.json()) as { url: string };
-    setUploadedUrl(data.url);
+    const data: string = (await res.json()) as string;
+    setUploadedUrl(data);
+    const user = (await getUserInformation()) as IUser;
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
     handleOnClick(false);
+    window.location.reload();
   };
 
   return (
