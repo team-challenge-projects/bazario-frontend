@@ -1,10 +1,11 @@
 'use client';
 
-import React, { FC, useState } from 'react';
+import React, { FC, use, useEffect, useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import { IUser } from '@/types/user';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -29,6 +30,15 @@ const Header: FC = () => {
 
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
+  const [user, setUser] = useState({} as IUser);
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+
+    if (user && user !== 'undefined') {
+      const parsedUser = JSON.parse(user) as IUser;
+      setUser(parsedUser);
+    }
+  }, []);
 
   return (
     <header
@@ -80,7 +90,9 @@ const Header: FC = () => {
             </Button>
             {isAuthenticated ? (
               <Avatar onClick={() => setIsAvatarClicked((prev) => !prev)}>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage
+                  src={user.avatar || 'https://github.com/shadcn.png'}
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             ) : (
