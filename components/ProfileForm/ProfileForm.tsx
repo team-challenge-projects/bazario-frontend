@@ -48,7 +48,7 @@ export function ProfileForm({ user }: { user: IUser }) {
   });
   const addressForm = useForm<{ cityName: string }>({
     resolver: zodResolver(formSchema.pick({ cityName: true })),
-    defaultValues: { cityName: '' },
+    defaultValues: { cityName: user.cityName || '' },
   });
   const handleSubmitForm = async (data: {
     username?: string;

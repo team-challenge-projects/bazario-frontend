@@ -13,7 +13,6 @@ export async function GET() {
       },
     },
   );
-  console.log('Response from route user', res);
 
   const data = (await res.json()) as IUser;
   return Response.json(data);
@@ -32,7 +31,6 @@ export async function PATCH(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-      credentials: 'include',
     },
   );
 
