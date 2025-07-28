@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { ChangeIcon } from '@/public/ChangeIcon';
 import { Exit } from '@/public/Exit';
-import { IUser } from '@/types/user';
+import { useUserStore } from '@/store/useUserStore';
 import { useRouter } from 'next/navigation';
 
 import { ImageDropzone } from '@/components/ImageDropzone';
@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button';
 
 const Profile = () => {
   const [isChecked, setIsChecked] = useState(0);
-  const [user, setUser] = useState({} as IUser);
   const router = useRouter();
   const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
   const buttonsData = [
@@ -46,15 +45,8 @@ const Profile = () => {
       handleOnClick: () => router.push('/'),
     },
   ];
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (!user || user === 'undefined') {
-      router.push('/login');
-    } else {
-      const parsedUser = JSON.parse(user) as IUser;
-      setUser(parsedUser);
-    }
-  }, []);
+
+  const user = useUserStore((state) => state.user);
 
   const profileOptions = [
     <StartProfilePage />,
@@ -74,7 +66,7 @@ const Profile = () => {
           <div className="mb-7">
             <div className="mb-1 flex flex-row items-center gap-4">
               <Avatar className="h-24 w-24">
-                <AvatarImage src={user?.avatar || '/avatar.jpg'} />
+                <AvatarImage src={user ? user?.avatar : '/avatar.jpg'} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <div className="text-3xl font-semibold">{user?.firstName}</div>

@@ -24,19 +24,19 @@ const formSchema = z.object({
   cityName: z.string(),
 });
 
-export function ProfileForm({ user }: { user: IUser }) {
+export function ProfileForm({ user }: { user: IUser | null }) {
   // Окремі форми для кожного поля
   const usernameForm = useForm<{ username: string }>({
     resolver: zodResolver(formSchema.pick({ username: true })),
-    defaultValues: { username: `${user.firstName} ${user.lastName}` || '' },
+    defaultValues: { username: `${user?.firstName} ${user?.lastName}` || '' },
   });
   const phoneForm = useForm<{ phoneNumber: string }>({
     resolver: zodResolver(formSchema.pick({ phoneNumber: true })),
-    defaultValues: { phoneNumber: user.phoneNumber || '' },
+    defaultValues: { phoneNumber: user?.phoneNumber || '' },
   });
   const emailForm = useForm<{ email: string }>({
     resolver: zodResolver(formSchema.pick({ email: true })),
-    defaultValues: { email: user.email || '' },
+    defaultValues: { email: user?.email || '' },
   });
   const messengerPhoneForm = useForm<{ messengerPhone: string }>({
     resolver: zodResolver(formSchema.pick({ messengerPhone: true })),
@@ -48,7 +48,7 @@ export function ProfileForm({ user }: { user: IUser }) {
   });
   const addressForm = useForm<{ cityName: string }>({
     resolver: zodResolver(formSchema.pick({ cityName: true })),
-    defaultValues: { cityName: user.cityName || '' },
+    defaultValues: { cityName: user?.cityName || '' },
   });
   const handleSubmitForm = async (data: {
     username?: string;

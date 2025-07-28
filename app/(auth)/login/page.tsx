@@ -4,13 +4,13 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 
+import { useUserStore } from '@/store/useUserStore';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 
-import { getUserInformation } from '@/lib/api/getUserInformation';
 import { loginSchema } from '@/lib/validateSchema';
 
 import { Button } from '@/components/ui/button';
@@ -28,15 +28,15 @@ const Login: FC = () => {
     resolver: zodResolver(loginSchema),
   });
   const router = useRouter();
+  const fetchUser = useUserStore((state) => state.fetchUser);
+  const user = useUserStore((state) => state.user);
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data);
-      const user = await getUserInformation();
-      const userId = user?.id;
+      if (response === 'OK') await fetchUser();
+
       console.log('✅ Відповідь сервера:', response);
-      // Зберігаємо user як JSON рядок
-      localStorage.setItem('user', JSON.stringify(user));
-      router.push(`/profile/${userId}`);
+      router.push(`/profile/${user?.id}`);
     } catch (error) {
       console.log(error);
     }
