@@ -1,11 +1,11 @@
 'use client';
 
-import React, { FC, use, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
-import { IUser } from '@/types/user';
+import { useUserStore } from '@/store/useUserStore';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -21,7 +21,6 @@ import ProfileList from './ProfileList';
 const Header: FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   const pathname = usePathname();
-  const [isAuthenticated] = useState(true);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
   const handleOnListClick = () => {
@@ -30,16 +29,7 @@ const Header: FC = () => {
 
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
-  const [user, setUser] = useState({} as IUser);
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-
-    if (user && user !== 'undefined') {
-      const parsedUser = JSON.parse(user) as IUser;
-      setUser(parsedUser);
-    }
-  }, []);
-
+  const user = useUserStore((state) => state.user);
   return (
     <header
       className={`${
@@ -88,7 +78,7 @@ const Header: FC = () => {
                 </div>
               )}
             </Button>
-            {isAuthenticated ? (
+            {user ? (
               <Avatar onClick={() => setIsAvatarClicked((prev) => !prev)}>
                 <AvatarImage
                   src={user.avatar || 'https://github.com/shadcn.png'}
@@ -100,15 +90,18 @@ const Header: FC = () => {
                 <HiOutlineUser className="h-8 w-8" />
               </Button>
             )}
-            {isAuthenticated && isAvatarClicked && (
+            {user && isAvatarClicked && (
               <ProfileList isClickedList={handleOnListClick} />
             )}
           </div>
           <div className="flex gap-3.5">
-            <Button>Додати оголошення</Button>
-            <Button asChild variant="secondary">
-              <Link href="/login">Увійти/Зареєструватись</Link>
-            </Button>
+            {user ? (
+              <Button>Додати оголошення</Button>
+            ) : (
+              <Button asChild variant="secondary">
+                <Link href="/login">Увійти/Зареєструватись</Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

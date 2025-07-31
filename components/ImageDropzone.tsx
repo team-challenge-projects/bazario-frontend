@@ -8,10 +8,9 @@ import {
   useDropzone,
 } from 'react-dropzone';
 
+import { useUserStore } from '@/store/useUserStore';
 import { IUser } from '@/types/user';
 import Image from 'next/image';
-
-import { getUserInformation } from '@/lib/api/getUserInformation';
 
 import { Button } from '@/components/ui/button';
 
@@ -25,7 +24,7 @@ export function ImageDropzone({
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
-
+  const fetchUser = useUserStore((state) => state.fetchUser);
   const onDrop: DropzoneOptions['onDrop'] = useCallback(
     (acceptedFiles: File[]) => {
       const image = acceptedFiles[0];
@@ -64,12 +63,9 @@ export function ImageDropzone({
 
     const data: string = (await res.json()) as string;
     setUploadedUrl(data);
-    const user = (await getUserInformation()) as IUser;
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    }
+    await fetchUser();
+
     handleOnClick(false);
-    window.location.reload();
   };
 
   return (
