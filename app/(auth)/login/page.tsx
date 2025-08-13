@@ -64,7 +64,9 @@ const Login: FC = () => {
     <div className="flex w-screen items-center justify-center bg-custom-half-dark-grey sm:h-full sm:py-[56px] md:h-[900px]">
       <div className="flex justify-center rounded-[40px] bg-secondary py-[56px] sm:h-full sm:w-[335px] md:h-[712px] md:w-[727px] lg:h-[735px] lg:w-[906px] xl:h-[745px] xl:w-[906px]">
         <div className="flex flex-col items-center gap-7 xl:h-[449px] xl:w-[794px]">
-          <Image src="/BazarioBig.svg" alt="logo" width={106} height={106} />
+          <Link href="/">
+            <Image src="/BazarioBig.svg" alt="logo" width={106} height={106} />
+          </Link>
           <div className="flex sm:flex-col sm:gap-4 md:flex-row lg:gap-14">
             <form
               onSubmit={handleSubmit(onSubmit)}
