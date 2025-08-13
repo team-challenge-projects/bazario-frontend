@@ -20,7 +20,7 @@ const Reset: FC = () => {
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      email: '',
+      login: '',
     },
   });
 
@@ -54,10 +54,10 @@ const Reset: FC = () => {
               </p>
               <div className="flex flex-col gap-[14px]">
                 <Input
-                  placeholder="Ваш email"
+                  placeholder="Ваш логін"
                   type="text"
-                  {...register('email')}
-                  error={errors.email?.message}
+                  {...register('login')}
+                  error={errors.login?.message}
                 />
               </div>
               <Button type="submit">

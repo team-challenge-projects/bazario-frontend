@@ -38,7 +38,7 @@ export async function middleware(req: NextRequest) {
 
 // 🔒 Додай до яких маршрутів застосовувати
 export const config = {
-  matcher: ['/profile/:path*'],
+  matcher: ['/profile/:path*', '/add-ad'],
 };
 function isTokenExpired(token: string): boolean {
   try {

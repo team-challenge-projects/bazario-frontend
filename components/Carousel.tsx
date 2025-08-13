@@ -7,7 +7,11 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 
-export default function CarouselOrientation({ links }: { links: string[] }) {
+export default function CarouselOrientation({
+  links,
+}: {
+  links: string[] | undefined;
+}) {
   return (
     <Carousel
       opts={{
@@ -17,7 +21,7 @@ export default function CarouselOrientation({ links }: { links: string[] }) {
       className="w-full max-w-xs"
     >
       <CarouselContent className="-mt-1 h-[502px]">
-        {links.map((link, index) => (
+        {links?.map((link, index) => (
           <CarouselItem key={index} className="shrink-1 pt-1 md:basis-1/2">
             <div className="p-1">
               <Card

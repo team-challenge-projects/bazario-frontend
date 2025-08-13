@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
   );
   if (!externalRes.ok) {
     return NextResponse.json(
-      { message: 'Invalid credentials' },
-      { status: 401 },
+      { message: externalRes.statusText },
+      { status: externalRes.status },
     );
   }
   const accessToken = await externalRes.text();

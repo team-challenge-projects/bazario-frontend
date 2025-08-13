@@ -1,19 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { ChangeIcon } from '@/public/ChangeIcon';
 import { Exit } from '@/public/Exit';
 import { useUserStore } from '@/store/useUserStore';
 import { useRouter } from 'next/navigation';
 
-import { ImageDropzone } from '@/components/ImageDropzone';
 import { ProfileForm } from '@/components/ProfileForm/ProfileForm';
 import { ProfileManagement } from '@/components/ProfileManagement';
 import { ProfileMessages } from '@/components/ProfileMessages';
 import { StartProfilePage } from '@/components/StartProfilePage';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+
+import PopUp from './PopUp';
 
 const Profile = () => {
   const [isChecked, setIsChecked] = useState(0);
@@ -59,7 +60,11 @@ const Profile = () => {
     <>
       {' '}
       {isAvatarClicked && (
-        <ImageDropzone id={user?.id || ''} handleOnClick={setIsAvatarClicked} />
+        <PopUp
+          id={user?.id || ''}
+          handleOnClick={setIsAvatarClicked}
+          type="avatar"
+        />
       )}
       <div className="relative mt-[52px] grid min-h-[calc(100vh-314px-86px)] w-full grid-cols-[1fr_2fr] gap-4 p-4 xl:mx-auto xl:w-[1280px]">
         <div className="row-span-2">

@@ -48,13 +48,15 @@ const cardsNumber = z
   .regex(/^\d{4} \d{4} \d{4} \d{4}$/, 'Введіть дійсний номер картки');
 
 export const loginSchema = z.object({
-  email: email,
+  login: email || phone,
   password: password,
 });
 export type LoginValues = z.infer<typeof loginSchema>;
 
 export const resetPasswordSchema = z.object({
-  email: email,
+  login: email || phone,
+  password: password,
+  repeatPassword: password,
 });
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 
