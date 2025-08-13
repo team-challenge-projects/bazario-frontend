@@ -8,7 +8,7 @@ const accept = z.boolean().refine((data) => data, {
 const email = z
   .string({ required_error: 'Це поле є обов`язковим.' })
   .min(1, 'Це поле є обов`язковим.')
-  .max(30, 'максимальна кількість символів 30')
+  .max(70, 'максимальна кількість символів 70')
   .email('Неправильний формат електронної пошти');
 
 const password = z
@@ -18,11 +18,7 @@ const password = z
   .regex(/^(?=.*[a-z])/, 'мінімум одна мала літера')
   .regex(/^(?=.*[A-Z])/, 'мінімум одна велика літера')
   .regex(/^(?=.*\d)/, 'мінімум одна цифра')
-  .regex(/^(?=.*[#@&])/, 'мінімум один спеціальний символ (#, @ або &)')
-  .regex(
-    /^[A-Za-z\d#@&]+$/,
-    'дозволені тільки латинські літери, цифри та символи # @ &',
-  );
+  .regex(/^[A-Za-z\d]/, 'дозволені тільки латинські літери і цифри ');
 
 const firstName = z
   .string()
@@ -52,13 +48,15 @@ const cardsNumber = z
   .regex(/^\d{4} \d{4} \d{4} \d{4}$/, 'Введіть дійсний номер картки');
 
 export const loginSchema = z.object({
-  email: email,
+  login: email || phone,
   password: password,
 });
 export type LoginValues = z.infer<typeof loginSchema>;
 
 export const resetPasswordSchema = z.object({
-  email: email,
+  login: email || phone,
+  password: password,
+  repeatPassword: password,
 });
 export type ResetPasswordValues = z.infer<typeof resetPasswordSchema>;
 

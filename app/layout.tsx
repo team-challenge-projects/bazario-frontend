@@ -28,12 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.className}>
       <body
-        className={`flex h-full w-screen flex-col items-center bg-secondary ${poppins.variable}`}
+        className={`flex h-full w-screen flex-col items-center bg-custom-light-mint ${poppins.variable}`}
       >
         <Suspense>
           <Header />
         </Suspense>
-        <main className="w-screen px-20 py-14"> {children}</main>
+        <main> {children}</main>
         <Suspense>
           <Footer />
         </Suspense>

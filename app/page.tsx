@@ -1,13 +1,22 @@
+'use client';
+
 import { Suspense } from 'react';
 
 import { products } from '@/utils/fakeData';
+import { usePathname } from 'next/navigation';
 
 import Categories from '@/components/Categories';
 import GoodsList from '@/components/GoodsList';
 
 export default function Home() {
+  const pathname = usePathname();
+  const hidePaddings = ['/login', '/reset-password', '/register', '/verify'];
+  const isPaddingsHidden = hidePaddings.includes(pathname);
+
   return (
-    <div className="flex-col">
+    <div
+      className={`w-screen flex-col ${isPaddingsHidden ? '' : 'px-20 py-14'}`}
+    >
       <Suspense>
         <Categories />
       </Suspense>

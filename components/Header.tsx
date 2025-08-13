@@ -5,6 +5,7 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import { useUserStore } from '@/store/useUserStore';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,15 +16,20 @@ import Input from '@/components/common/Input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
+import ProfileList from './ProfileList';
+
 const Header: FC = () => {
   const [isSelected, setIsSelected] = useState(false);
   const pathname = usePathname();
-  const [isAuthenticated] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
+  const handleOnListClick = () => {
+    setIsAvatarClicked(false);
+  };
 
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
-
+  const user = useUserStore((state) => state.user);
   return (
     <header
       className={`${
@@ -55,7 +61,7 @@ const Header: FC = () => {
           ) : null}
         </div>
         <div className="flex items-center gap-7 sm:hidden lg:flex">
-          <div className="flex gap-[14px]">
+          <div className="relative flex gap-[14px]">
             <Button variant="ghost" size="icon">
               {!isSelected ? (
                 <IoMdHeartEmpty
@@ -72,9 +78,11 @@ const Header: FC = () => {
                 </div>
               )}
             </Button>
-            {isAuthenticated ? (
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+            {user ? (
+              <Avatar onClick={() => setIsAvatarClicked((prev) => !prev)}>
+                <AvatarImage
+                  src={user.avatar || 'https://github.com/shadcn.png'}
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             ) : (
@@ -82,12 +90,20 @@ const Header: FC = () => {
                 <HiOutlineUser className="h-8 w-8" />
               </Button>
             )}
+            {user && isAvatarClicked && (
+              <ProfileList isClickedList={handleOnListClick} />
+            )}
           </div>
           <div className="flex gap-3.5">
-            <Button>Додати оголошення</Button>
-            <Button asChild variant="secondary">
-              <Link href="/login">Увійти/Зареєструватись</Link>
-            </Button>
+            {user ? (
+              <Button>
+                <Link href="/add-ad">Додати оголошення</Link>
+              </Button>
+            ) : (
+              <Button asChild variant="secondary">
+                <Link href="/login">Увійти/Зареєструватись</Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>

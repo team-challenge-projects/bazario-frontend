@@ -90,13 +90,13 @@ const ProductCard = async ({
             </div>
           </div>
           <div className="flex w-full flex-col items-end justify-between gap-2">
-            <Button className="h-12 w-[413px] rounded-[20px] bg-custom-black shadow-[0px_2px_3px_0px_rgba(0,0,0,0.3),0px_6px_10px_4px_rgba(0,0,0,0.15)]">
-              <span className="text-xl font-semibold text-custom-light-mint">
+            <Button className="h-12 w-[413px] rounded-[20px] bg-custom-black text-custom-light-mint shadow-[0px_2px_3px_0px_rgba(0,0,0,0.3),0px_6px_10px_4px_rgba(0,0,0,0.15)] hover:bg-custom-light-mint hover:text-custom-black">
+              <span className="text-xl font-semibold">
                 Переглянути контакти продавця
               </span>
             </Button>
-            <Button className="h-12 w-[413px] rounded-[20px] bg-custom-light-mint shadow-[0px_1px_3px_0px_rgba(0,0,0,0.3),0px_4px_8px_3px_rgba(0,0,0,0.15)]">
-              <span className="text-xl font-semibold text-custom-black">
+            <Button className="h-12 w-[413px] rounded-[20px] bg-custom-light-mint text-custom-black shadow-[0px_1px_3px_0px_rgba(0,0,0,0.3),0px_4px_8px_3px_rgba(0,0,0,0.15)] hover:text-custom-light-mint">
+              <span className="text-xl font-semibold">
                 Додати товар до порівняння
               </span>
             </Button>

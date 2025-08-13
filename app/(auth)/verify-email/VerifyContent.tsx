@@ -13,24 +13,33 @@ export const VerifyContent: FC = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     const verifyEmail = async () => {
       try {
         setIsLoading(true);
+        const searchParams = new URLSearchParams(window.location.search);
+        const fullEncoded = searchParams.toString();
 
-        const email = searchParams.get('email');
-        const token = searchParams.get('token');
+        const emailMatch = fullEncoded.match(/email=([^&]+)/);
+        const tokenMatch = fullEncoded.match(/token=([^&]+)/);
 
-        if (!email || !token) {
+        const encodedEmail = emailMatch
+          ? emailMatch[1].replace('%40', '@')
+          : null;
+        const encodedToken = tokenMatch ? tokenMatch[1] : null;
+
+        if (!encodedEmail || !encodedToken) {
           setError('Відсутні необхідні параметри у URL');
           setIsLoading(false);
           return;
         }
 
         const response = await axios.post(
-          'https://bazario-mkur.onrender.com/api/public/verify',
-          { email, token },
+          'https://bazario-mkur.onrender.com/api/anonymous/email/verify',
+          {
+            email: encodedEmail,
+            hex: encodedToken,
+          },
         );
         console.log(response);
       } catch (error) {
