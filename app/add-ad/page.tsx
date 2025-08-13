@@ -203,7 +203,9 @@ export default function AddAdPage() {
             <div>
               <Label>Стан</Label>
               <Select
-                onValueChange={(value) => form.setValue('condition', value)}
+                onValueChange={(value: 'new' | 'used-good' | 'used') =>
+                  form.setValue('condition', value)
+                }
                 defaultValue="used-good"
               >
                 <SelectTrigger className="w-[180px]">
@@ -284,10 +286,7 @@ export default function AddAdPage() {
         {/* Photos */}
         <div>
           <div className="mb-4 flex h-[502px] w-full items-center justify-end gap-x-2">
-            <div
-              className="h-[502px] w-[739px] rounded-[20px] bg-white bg-cover bg-center bg-no-repeat"
-              // style={{ backgroundImage: `url(${product?.image})` }}
-            >
+            <div className="h-[502px] w-[739px] rounded-[20px] bg-white bg-cover bg-center bg-no-repeat">
               <ImageDropzone id="7" type="AD" handleOnClick={() => {}} />
             </div>
 
