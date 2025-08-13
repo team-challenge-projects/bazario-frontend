@@ -77,8 +77,8 @@ const Login: FC = () => {
                 <Input
                   placeholder="Ваш емейл"
                   type="text"
-                  {...register('email')}
-                  error={errors.email?.message}
+                  {...register('login')}
+                  error={errors.login?.message}
                 />
                 <Input
                   placeholder="Пароль"

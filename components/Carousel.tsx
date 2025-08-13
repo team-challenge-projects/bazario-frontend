@@ -7,7 +7,11 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 
-export default function CarouselOrientation({ links }: { links: string[] }) {
+export default function CarouselOrientation({
+  links,
+}: {
+  links: string[] | undefined;
+}) {
   return (
     <Carousel
       opts={{

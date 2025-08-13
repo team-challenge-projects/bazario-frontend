@@ -96,7 +96,9 @@ const Header: FC = () => {
           </div>
           <div className="flex gap-3.5">
             {user ? (
-              <Button>Додати оголошення</Button>
+              <Button>
+                <Link href="/add-ad">Додати оголошення</Link>
+              </Button>
             ) : (
               <Button asChild variant="secondary">
                 <Link href="/login">Увійти/Зареєструватись</Link>

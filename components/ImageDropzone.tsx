@@ -8,22 +8,28 @@ import {
   useDropzone,
 } from 'react-dropzone';
 
+import { PlusBigCircle } from '@/public/PlusBigCircle';
+import { useImageDropzoneStore } from '@/store/useImageDropzoneStore';
 import { useUserStore } from '@/store/useUserStore';
-import { IUser } from '@/types/user';
 import Image from 'next/image';
+import { set } from 'zod';
 
 import { Button } from '@/components/ui/button';
 
 export function ImageDropzone({
   id,
+  type,
   handleOnClick,
 }: {
   id: string;
+  type: string;
   handleOnClick: (arg: boolean) => void;
 }): JSX.Element {
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null);
+  const preview = useImageDropzoneStore((state) => state.preview);
+  const setPreview = useImageDropzoneStore((state) => state.setPreview);
+  const setUploadedUrl = useImageDropzoneStore((state) => state.setUploadedUrl);
+  const uploadedUrl = useImageDropzoneStore((state) => state.uploadedUrl);
   const fetchUser = useUserStore((state) => state.fetchUser);
   const onDrop: DropzoneOptions['onDrop'] = useCallback(
     (acceptedFiles: File[]) => {
@@ -45,7 +51,8 @@ export function ImageDropzone({
     isDragActive: boolean;
   } = useDropzone({
     accept: { 'image/*': [] },
-    maxFiles: 1,
+    multiple: true,
+    maxFiles: 5,
     onDrop,
   });
 
@@ -54,67 +61,54 @@ export function ImageDropzone({
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('id', id);
+    formData.append('type', type);
 
-    const res = await fetch(`/api/upload/${id}`, {
+    const res = await fetch(`/api/upload`, {
       method: 'POST',
       credentials: 'include',
       body: formData,
     });
+    if (res.status !== 200) throw new Error('Failed to upload image');
+    if (res.ok) {
+      const data: string = (await res.json()) as string;
+      setUploadedUrl(data);
+    }
 
-    const data: string = (await res.json()) as string;
-    setUploadedUrl(data);
     await fetchUser();
 
+    setPreview('');
     handleOnClick(false);
   };
 
   return (
-    <>
+    <div className="flex h-full flex-col items-center justify-center gap-4">
       {' '}
       <div
-        className="absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-4 bg-custom-half-dark-grey"
-        onClick={() => handleOnClick(false)}
-      />
-      <div className="absolute left-1/2 top-1/2 z-10 mx-auto flex -translate-x-1/2 -translate-y-1/2 transform flex-col items-center justify-center gap-4 space-y-4 rounded-[40px] bg-secondary py-[56px] sm:h-full sm:w-[335px] md:h-[712px] md:w-[727px] lg:h-[735px] lg:w-[906px] xl:h-[745px] xl:w-[906px]">
-        <div
-          {...getRootProps()}
-          className={`cursor-pointer rounded-xl border-2 border-dashed p-6 text-center transition ${
-            isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
-          }`}
-        >
-          <input {...getInputProps()} />
-          {preview ? (
-            <Image
-              src={preview}
-              alt="Preview"
-              width={300}
-              height={200}
-              className="mx-auto rounded-md object-contain"
-            />
-          ) : (
+        {...getRootProps()}
+        className={`isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300' } cursor-pointer`}
+      >
+        <input {...getInputProps()} />
+        {preview ? (
+          <Image
+            src={preview}
+            alt="Preview"
+            width={300}
+            height={200}
+            className="mx-auto rounded-md object-contain"
+          />
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-2 p-4 text-center">
+            <PlusBigCircle />
             <p className="text-gray-500">
               Перетягни зображення або натисни для вибору
             </p>
-          )}
-        </div>
-
-        <Button onClick={handleUpload} disabled={!file}>
-          Завантажити
-        </Button>
-
-        {uploadedUrl && (
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground">Завантажено:</p>
-            <Image
-              src={uploadedUrl}
-              alt="Uploaded"
-              width={300}
-              height={200}
-              className="mx-auto mt-2 rounded-md"
-            />
           </div>
         )}
       </div>
-    </>
+      <Button onClick={handleUpload} disabled={!file}>
+        Завантажити
+      </Button>
+    </div>
   );
 }
