@@ -5,6 +5,7 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import { useProductStore } from '@/store/useProductStore';
 import { useUserStore } from '@/store/useUserStore';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
@@ -30,6 +31,8 @@ const Header: FC = () => {
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
   const user = useUserStore((state) => state.user);
+  const fetchAdverts = useProductStore((state) => state.fetchAdverts);
+  const addAdvert = useProductStore((state) => state.addAdvert);
   return (
     <header
       className={`${
@@ -96,7 +99,12 @@ const Header: FC = () => {
           </div>
           <div className="flex gap-3.5">
             {user ? (
-              <Button>
+              <Button
+                onClick={async () => {
+                  await fetchAdverts();
+                  await addAdvert();
+                }}
+              >
                 <Link href="/add-ad">Додати оголошення</Link>
               </Button>
             ) : (

@@ -12,7 +12,6 @@ import { PlusBigCircle } from '@/public/PlusBigCircle';
 import { useImageDropzoneStore } from '@/store/useImageDropzoneStore';
 import { useUserStore } from '@/store/useUserStore';
 import Image from 'next/image';
-import { set } from 'zod';
 
 import { Button } from '@/components/ui/button';
 

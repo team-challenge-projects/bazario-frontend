@@ -43,8 +43,8 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 export default function AddAdPage() {
-  const addProduct = useProductStore((state) => state.addProduct);
-
+  const patchAdvert = useProductStore((state) => state.patchAdvert);
+  const newProduct = useProductStore((state) => state.newProduct);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,246 +62,243 @@ export default function AddAdPage() {
   });
 
   const imageUrls = useImageDropzoneStore((state) => state.imageUrls);
-  const onSubmit = (data: FormValues) => {
-    addProduct(data);
+  const onSubmit = async (data: FormValues) => {
+    await patchAdvert(data, newProduct.id);
     // Handle form submission (e.g., redirect or show success message)
     console.log('Form submitted:', data);
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1280px] full:w-[1760px]">
+    <div className="container mx-auto flex flex-row gap-5 space-y-6 px-4 py-8 sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1280px] full:w-[1760px]">
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-row gap-5 space-y-6"
+        className="w-[413px]"
+        id="add-ad-form"
       >
-        <div className="w-[413px]">
-          {/* Product Name */}
-          <div>
-            <Label htmlFor="title">Назва товару</Label>
+        {/* Product Name */}
+        <div>
+          <Label htmlFor="title">Назва товару</Label>
+          <Input
+            id="title"
+            placeholder="Введіть назву"
+            {...form.register('title')}
+          />
+          {form.formState.errors.title && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.title.message}
+            </p>
+          )}
+        </div>
+
+        {/* Product Description */}
+        <div>
+          <Label htmlFor="description">Опис товару</Label>
+          <Textarea
+            id="description"
+            placeholder="Додайте опис товару"
+            {...form.register('description')}
+          />
+          {form.formState.errors.description && (
+            <p className="text-sm text-red-500">
+              {form.formState.errors.description.message}
+            </p>
+          )}
+        </div>
+
+        <div className="border-t pt-6">
+          <h2 className="mb-4 text-xl font-semibold">Ціна в гривнях</h2>
+
+          {/* Price */}
+          <div className="mb-4">
+            <Label htmlFor="price">Ціна</Label>
             <Input
-              id="title"
-              placeholder="Введіть назву"
-              {...form.register('title')}
+              id="price"
+              placeholder="Введіть ціну"
+              type="number"
+              {...form.register('price')}
             />
-            {form.formState.errors.title && (
+            {form.formState.errors.price && (
               <p className="text-sm text-red-500">
-                {form.formState.errors.title.message}
+                {form.formState.errors.price.message}
               </p>
             )}
           </div>
 
-          {/* Product Description */}
+          {/* Delivery Methods */}
           <div>
-            <Label htmlFor="description">Опис товару</Label>
-            <Textarea
-              id="description"
-              placeholder="Додайте опис товару"
-              {...form.register('description')}
-            />
-            {form.formState.errors.description && (
+            <Label>Оберіть способи доставки</Label>
+            <div className="mt-2 space-y-2">
+              {['Самовивіз', 'Нова пошта', 'Укрпошта'].map((method) => (
+                <div key={method} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`delivery-${method}`}
+                    value={method}
+                    checked={form.watch('deliveryMethods')?.includes(method)}
+                    onCheckedChange={(checked) => {
+                      const current = form.getValues('deliveryMethods') || [];
+                      if (checked) {
+                        form.setValue('deliveryMethods', [...current, method]);
+                      } else {
+                        form.setValue(
+                          'deliveryMethods',
+                          current.filter((m) => m !== method),
+                        );
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`delivery-${method}`}>{method}</Label>
+                </div>
+              ))}
+            </div>
+            {form.formState.errors.deliveryMethods && (
               <p className="text-sm text-red-500">
-                {form.formState.errors.description.message}
+                {form.formState.errors.deliveryMethods.message}
               </p>
             )}
-          </div>
-
-          <div className="border-t pt-6">
-            <h2 className="mb-4 text-xl font-semibold">Ціна в гривнях</h2>
-
-            {/* Price */}
-            <div className="mb-4">
-              <Label htmlFor="price">Ціна</Label>
-              <Input
-                id="price"
-                placeholder="Введіть ціну"
-                type="number"
-                {...form.register('price')}
-              />
-              {form.formState.errors.price && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.price.message}
-                </p>
-              )}
-            </div>
-
-            {/* Delivery Methods */}
-            <div>
-              <Label>Оберіть способи доставки</Label>
-              <div className="mt-2 space-y-2">
-                {['Самовивіз', 'Нова пошта', 'Укрпошта'].map((method) => (
-                  <div key={method} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`delivery-${method}`}
-                      value={method}
-                      checked={form.watch('deliveryMethods')?.includes(method)}
-                      onCheckedChange={(checked) => {
-                        const current = form.getValues('deliveryMethods') || [];
-                        if (checked) {
-                          form.setValue('deliveryMethods', [
-                            ...current,
-                            method,
-                          ]);
-                        } else {
-                          form.setValue(
-                            'deliveryMethods',
-                            current.filter((m) => m !== method),
-                          );
-                        }
-                      }}
-                    />
-                    <Label htmlFor={`delivery-${method}`}>{method}</Label>
-                  </div>
-                ))}
-              </div>
-              {form.formState.errors.deliveryMethods && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.deliveryMethods.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Seller Type */}
-          <div className="border-t pt-6">
-            <h2 className="mb-4 text-xl font-semibold">Продавець</h2>
-            <RadioGroup
-              defaultValue="private"
-              className="flex space-x-4"
-              onValueChange={(value) =>
-                form.setValue('sellerType', value as 'private' | 'business')
-              }
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="private" id="private" />
-                <Label htmlFor="private">Приватна особа</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="business" id="business" />
-                <Label htmlFor="business">Бізнес</Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          {/* Location and Condition */}
-          <div className="border-t pt-6">
-            <h2 className="mb-4 text-xl font-semibold">Місцезнаходження</h2>
-
-            <div className="mb-4">
-              <Label htmlFor="location">Місце</Label>
-              <Input
-                id="location"
-                placeholder="Белика Круга, Полтавська обл."
-                {...form.register('location')}
-              />
-              {form.formState.errors.location && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.location.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label>Стан</Label>
-              <Select
-                onValueChange={(value: 'new' | 'used-good' | 'used') =>
-                  form.setValue('condition', value)
-                }
-                defaultValue="used-good"
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Оберіть стан" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="new">Новий</SelectItem>
-                  <SelectItem value="used-good">В гарному стані</SelectItem>
-                  <SelectItem value="used">Уживаний</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Category and Additional Info */}
-          <div className="border-t pt-6">
-            <h2 className="mb-4 text-xl font-semibold">Категорія</h2>
-
-            <div className="mb-4">
-              <Label htmlFor="category">Оберіть категорію</Label>
-              <Select
-                onValueChange={(value) => form.setValue('category', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Оберіть категорію" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="toys">Іграшки</SelectItem>
-                  <SelectItem value="clothes">Одяг</SelectItem>
-                  <SelectItem value="electronics">Електроніка</SelectItem>
-                </SelectContent>
-              </Select>
-              {form.formState.errors.category && (
-                <p className="text-sm text-red-500">
-                  {form.formState.errors.category.message}
-                </p>
-              )}
-            </div>
-
-            <div className="mb-4">
-              <Label htmlFor="brand">Бренд</Label>
-              <Input
-                id="brand"
-                placeholder="LEGO, Хата Київ, etc."
-                {...form.register('brand')}
-              />
-            </div>
-
-            <div>
-              <Label>Вікова група</Label>
-              <div className="mt-2 flex flex-col gap-2">
-                {['0-2 роки', '2 роки', '3-5 років'].map((age) => (
-                  <div key={age} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`age-${age}`}
-                      value={age}
-                      checked={form.watch('ageGroup')?.includes(age)}
-                      onCheckedChange={(checked) => {
-                        const current = form.getValues('ageGroup') || [];
-                        if (checked) {
-                          form.setValue('ageGroup', [...current, age]);
-                        } else {
-                          form.setValue(
-                            'ageGroup',
-                            current.filter((a) => a !== age),
-                          );
-                        }
-                      }}
-                    />
-                    <Label htmlFor={`age-${age}`}>{age}</Label>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Photos */}
-        <div>
-          <div className="mb-4 flex h-[502px] w-full items-center justify-end gap-x-2">
-            <div className="h-[502px] w-[739px] rounded-[20px] bg-white bg-cover bg-center bg-no-repeat">
-              <ImageDropzone id="7" type="AD" handleOnClick={() => {}} />
+        {/* Seller Type */}
+        <div className="border-t pt-6">
+          <h2 className="mb-4 text-xl font-semibold">Продавець</h2>
+          <RadioGroup
+            defaultValue="private"
+            className="flex space-x-4"
+            onValueChange={(value) =>
+              form.setValue('sellerType', value as 'private' | 'business')
+            }
+          >
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="private" id="private" />
+              <Label htmlFor="private">Приватна особа</Label>
             </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="business" id="business" />
+              <Label htmlFor="business">Бізнес</Label>
+            </div>
+          </RadioGroup>
+        </div>
 
-            <div>
-              <ProductsCarousel links={imageUrls} />
-            </div>
+        {/* Location and Condition */}
+        <div className="border-t pt-6">
+          <h2 className="mb-4 text-xl font-semibold">Місцезнаходження</h2>
+
+          <div className="mb-4">
+            <Label htmlFor="location">Місце</Label>
+            <Input
+              id="location"
+              placeholder="Белика Круга, Полтавська обл."
+              {...form.register('location')}
+            />
+            {form.formState.errors.location && (
+              <p className="text-sm text-red-500">
+                {form.formState.errors.location.message}
+              </p>
+            )}
           </div>
 
-          <div className="flex justify-end">
-            <Button type="submit" className="w-full sm:w-auto">
-              Опублікувати оголошення
-            </Button>
+          <div>
+            <Label>Стан</Label>
+            <Select
+              onValueChange={(value: 'new' | 'used-good' | 'used') =>
+                form.setValue('condition', value)
+              }
+              defaultValue="used-good"
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Оберіть стан" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="new">Новий</SelectItem>
+                <SelectItem value="used-good">В гарному стані</SelectItem>
+                <SelectItem value="used">Уживаний</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+
+        {/* Category and Additional Info */}
+        <div className="border-t pt-6">
+          <h2 className="mb-4 text-xl font-semibold">Категорія</h2>
+
+          <div className="mb-4">
+            <Label htmlFor="category">Оберіть категорію</Label>
+            <Select onValueChange={(value) => form.setValue('category', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Оберіть категорію" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="toys">Іграшки</SelectItem>
+                <SelectItem value="clothes">Одяг</SelectItem>
+                <SelectItem value="electronics">Електроніка</SelectItem>
+              </SelectContent>
+            </Select>
+            {form.formState.errors.category && (
+              <p className="text-sm text-red-500">
+                {form.formState.errors.category.message}
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <Label htmlFor="brand">Бренд</Label>
+            <Input
+              id="brand"
+              placeholder="LEGO, Хата Київ, etc."
+              {...form.register('brand')}
+            />
+          </div>
+
+          <div>
+            <Label>Вікова група</Label>
+            <div className="mt-2 flex flex-col gap-2">
+              {['0-2 роки', '2 роки', '3-5 років'].map((age) => (
+                <div key={age} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`age-${age}`}
+                    value={age}
+                    checked={form.watch('ageGroup')?.includes(age)}
+                    onCheckedChange={(checked) => {
+                      const current = form.getValues('ageGroup') || [];
+                      if (checked) {
+                        form.setValue('ageGroup', [...current, age]);
+                      } else {
+                        form.setValue(
+                          'ageGroup',
+                          current.filter((a) => a !== age),
+                        );
+                      }
+                    }}
+                  />
+                  <Label htmlFor={`age-${age}`}>{age}</Label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </form>
+      {/* Photos */}
+      <div>
+        <div className="mb-4 flex h-[502px] w-full items-center justify-end gap-x-2">
+          <div className="h-[502px] w-[739px] rounded-[20px] bg-white bg-cover bg-center bg-no-repeat">
+            <ImageDropzone
+              id={newProduct?.id ? newProduct?.id : ''}
+              type="AD"
+              handleOnClick={() => {}}
+            />
+          </div>
+
+          <div>
+            <ProductsCarousel links={imageUrls} />
+          </div>
+        </div>
+
+        <div className="flex justify-end">
+          <Button type="submit" className="w-full sm:w-auto" form="add-ad-form">
+            Опублікувати оголошення
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

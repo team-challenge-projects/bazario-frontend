@@ -38,3 +38,17 @@ export interface Location {
   name: string;
   region: string;
 }
+export type Product = {
+  id?: string;
+  title: string;
+  description: string;
+  price: string;
+  deliveryMethods?: string[];
+  sellerType?: 'private' | 'business';
+  location?: string;
+  condition?: 'new' | 'used-good' | 'used';
+  category: string;
+  brand?: string;
+  ageGroup?: string[];
+  photos?: File[];
+};

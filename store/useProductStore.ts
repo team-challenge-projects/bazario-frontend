@@ -1,26 +1,45 @@
+import { Product } from '@/types/product';
 import { create } from 'zustand';
-
-type Product = {
-  title: string;
-  description: string;
-  price: string;
-  deliveryMethods: string[];
-  sellerType: 'private' | 'business';
-  location: string;
-  condition: 'new' | 'used-good' | 'used';
-  category: string;
-  brand?: string;
-  ageGroup?: string[];
-  photos?: File[];
-};
 
 type ProductStore = {
   products: Product[];
-  addProduct: (product: Product) => void;
+  newProduct: Product;
+  patchAdvert: (product: Product, id: string | undefined) => Promise<void>;
+  fetchAdverts: () => Promise<void>;
+  addAdvert: () => Promise<void>;
 };
 
-export const useProductStore = create<ProductStore>((set) => ({
+export const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
-  addProduct: (product) =>
-    set((state) => ({ products: [...state.products, product] })),
+  newProduct: {} as Product,
+  patchAdvert: async (product, id) => {
+    if (!id) {
+      throw new Error('Product ID is required for patching');
+    }
+    const response = await fetch(`api/advert/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(product),
+    });
+    if (response.ok) {
+      await get().fetchAdverts();
+    }
+  },
+  fetchAdverts: async () => {
+    const response = await fetch(`api/adverts`);
+    const data = (await response.json()) as Product[];
+    set({ products: data });
+  },
+  addAdvert: async () => {
+    const response = await fetch(`api/advert`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const data = (await response.json()) as Product;
+    set({ newProduct: data });
+  },
 }));

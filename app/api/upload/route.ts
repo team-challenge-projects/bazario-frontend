@@ -1,8 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { reducer } from './../../../hooks/use-toast';
-
 export async function POST(req: NextRequest) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
@@ -21,10 +19,7 @@ export async function POST(req: NextRequest) {
   if (!type) {
     return NextResponse.json({ message: 'Type is missing' }, { status: 400 });
   }
-  console.log(
-    'url####   ',
-    `https://bazario-mkur.onrender.com/api/image/${(type as string).toUpperCase()}/${id as string}`,
-  );
+
   try {
     const res = await fetch(
       `https://bazario-mkur.onrender.com/api/image/${(type as string).toUpperCase()}/${id as string}`,
@@ -38,7 +33,6 @@ export async function POST(req: NextRequest) {
       },
     );
     const data: { url: string } = (await res.json()) as { url: string };
-    console.log('first data', data);
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error uploading image:', error);
