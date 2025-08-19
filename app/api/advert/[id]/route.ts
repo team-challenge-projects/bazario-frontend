@@ -17,15 +17,12 @@ export async function PATCH(
     price,
     categoryId: 1,
   };
-  console.log('ID:', id);
   if (!id) {
     return NextResponse.json(
       { message: 'User ID is missing' },
       { status: 400 },
     );
   }
-  console.log('Product to update:', product);
-  console.log('ID:', id);
   try {
     const res = await fetch(
       `https://bazario-mkur.onrender.com/api/private/ad/${id}`,
