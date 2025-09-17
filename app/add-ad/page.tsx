@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { useCategoryStore } from '@/store/useCategoryStore';
 import { useImageDropzoneStore } from '@/store/useImageDropzoneStore';
 import { useProductStore } from '@/store/useProductStore';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,6 +47,9 @@ type FormValues = z.infer<typeof formSchema>;
 export default function AddAdPage() {
   const patchAdvert = useProductStore((state) => state.patchAdvert);
   const newProduct = useProductStore((state) => state.newProduct);
+  const categories = useCategoryStore((state) => state.categories);
+  console.log('Categories:', categories);
+  const fetchCategories = useCategoryStore((state) => state.fetchCategories);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +72,9 @@ export default function AddAdPage() {
     // Handle form submission (e.g., redirect or show success message)
     console.log('Form submitted:', data);
   };
-
+  useEffect(() => {
+    void fetchCategories();
+  }, [fetchCategories]);
   return (
     <div className="container mx-auto flex flex-row gap-5 space-y-6 px-4 py-8 sm:w-[335px] md:w-[728px] lg:w-[864px] xl:w-[1280px] full:w-[1760px]">
       <form
@@ -228,9 +235,11 @@ export default function AddAdPage() {
                 <SelectValue placeholder="Оберіть категорію" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="toys">Іграшки</SelectItem>
-                <SelectItem value="clothes">Одяг</SelectItem>
-                <SelectItem value="electronics">Електроніка</SelectItem>
+                {categories?.map((cat) => (
+                  <SelectItem key={cat.id} value={cat.name}>
+                    {cat.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             {form.formState.errors.category && (
