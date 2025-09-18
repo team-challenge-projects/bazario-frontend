@@ -5,11 +5,12 @@ import { HiOutlineUser } from 'react-icons/hi2';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { IoSearchOutline } from 'react-icons/io5';
 
+import { useProductStore } from '@/store/useProductStore';
 import { useUserStore } from '@/store/useUserStore';
 import Hamburger from 'hamburger-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import MenuComponent from '@/components/MenuComponent/MenuComponent';
 import Input from '@/components/common/Input';
@@ -23,6 +24,7 @@ const Header: FC = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isAvatarClicked, setIsAvatarClicked] = useState<boolean>(false);
+  const router = useRouter();
   const handleOnListClick = () => {
     setIsAvatarClicked(false);
   };
@@ -30,6 +32,17 @@ const Header: FC = () => {
   const hideHeaderPaths = ['/login', '/reset-password', '/register', '/verify'];
   const isHeaderHidden = hideHeaderPaths.includes(pathname);
   const user = useUserStore((state) => state.user);
+  const fetchAdverts = useProductStore((state) => state.fetchAdverts);
+  const addAdvert = useProductStore((state) => state.addAdvert);
+  const handleOnClick = async () => {
+    await fetchAdverts();
+    const response = await addAdvert();
+    console.log('response:', response);
+    if (response && response.id) {
+      router.push(`/add-ad/${response.id}`);
+      console.log('url:', `/add-ad/${response.id}`);
+    }
+  };
   return (
     <header
       className={`${
@@ -96,9 +109,7 @@ const Header: FC = () => {
           </div>
           <div className="flex gap-3.5">
             {user ? (
-              <Button>
-                <Link href="/add-ad">Додати оголошення</Link>
-              </Button>
+              <Button onClick={handleOnClick}>Додати оголошення</Button>
             ) : (
               <Button asChild variant="secondary">
                 <Link href="/login">Увійти/Зареєструватись</Link>

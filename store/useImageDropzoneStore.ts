@@ -17,6 +17,7 @@ type ImageDropzoneStore = {
   addFormData: (data: FormData) => void;
   setPreview: (preview: string) => void;
   setUploadedUrl: (url: string) => void;
+  resetUploadedUrls: () => void;
 };
 
 export const useImageDropzoneStore = create<ImageDropzoneStore>((set) => ({
@@ -35,4 +36,5 @@ export const useImageDropzoneStore = create<ImageDropzoneStore>((set) => ({
       imageUrls: [...(state.imageUrls || []), url],
     }));
   },
+  resetUploadedUrls: () => set({ imageUrls: [] }),
 }));
