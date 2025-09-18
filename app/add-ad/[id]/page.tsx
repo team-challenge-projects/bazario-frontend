@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { use, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { useCategoryStore } from '@/store/useCategoryStore';
@@ -12,10 +12,8 @@ import * as z from 'zod';
 import ProductsCarousel from '@/components/Carousel';
 import { ImageDropzone } from '@/components/ImageDropzone';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -30,47 +28,55 @@ const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().min(1, 'Description is required'),
   price: z.string().min(1, 'Price is required'),
-  deliveryMethods: z
-    .array(z.string())
-    .min(1, 'Select at least one delivery method'),
-  sellerType: z.enum(['private', 'business']),
-  location: z.string().min(1, 'Location is required'),
-  condition: z.enum(['new', 'used-good', 'used']),
+  // deliveryMethods: z
+  //   .array(z.string())
+  //   .min(1, 'Select at least one delivery method'),
+  // sellerType: z.enum(['private', 'business']),
+  // location: z.string().min(1, 'Location is required'),
+  // condition: z.enum(['new', 'used-good', 'used']),
   category: z.string().min(1, 'Category is required'),
-  brand: z.string().optional(),
-  ageGroup: z.array(z.string()).optional(),
+  // brand: z.string().optional(),
+  // ageGroup: z.array(z.string()).optional(),
   photos: z.any().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
-
-export default function AddAdPage() {
+interface AddAdPageProps {
+  params: Promise<{ id: string }>;
+}
+export default function AddAdPage({ params }: AddAdPageProps) {
+  const { id } = use(params);
   const patchAdvert = useProductStore((state) => state.patchAdvert);
   const newProduct = useProductStore((state) => state.newProduct);
   const categories = useCategoryStore((state) => state.categories);
-  console.log('Categories:', categories);
   const fetchCategories = useCategoryStore((state) => state.fetchCategories);
+  const resetUploadedUrls = useImageDropzoneStore(
+    (state) => state.resetUploadedUrls,
+  );
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
       description: '',
       price: '',
-      deliveryMethods: [],
-      sellerType: 'private',
-      location: '',
-      condition: 'used-good',
+      // deliveryMethods: [],
+      // sellerType: 'private',
+      // location: '',
+      // condition: 'used-good',
       category: '',
-      brand: '',
-      ageGroup: [],
+      // brand: '',
+      // ageGroup: [],
     },
   });
 
   const imageUrls = useImageDropzoneStore((state) => state.imageUrls);
   const onSubmit = async (data: FormValues) => {
-    await patchAdvert(data, newProduct.id);
+    await patchAdvert(data, id);
     // Handle form submission (e.g., redirect or show success message)
     console.log('Form submitted:', data);
+    form.reset();
+    resetUploadedUrls();
   };
   useEffect(() => {
     void fetchCategories();
@@ -132,7 +138,7 @@ export default function AddAdPage() {
           </div>
 
           {/* Delivery Methods */}
-          <div>
+          {/* <div>
             <Label>Оберіть способи доставки</Label>
             <div className="mt-2 space-y-2">
               {['Самовивіз', 'Нова пошта', 'Укрпошта'].map((method) => (
@@ -148,7 +154,7 @@ export default function AddAdPage() {
                       } else {
                         form.setValue(
                           'deliveryMethods',
-                          current.filter((m) => m !== method),
+                          current.filter((m) => m !== method)
                         );
                       }
                     }}
@@ -162,11 +168,11 @@ export default function AddAdPage() {
                 {form.formState.errors.deliveryMethods.message}
               </p>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Seller Type */}
-        <div className="border-t pt-6">
+        {/* <div className="border-t pt-6">
           <h2 className="mb-4 text-xl font-semibold">Продавець</h2>
           <RadioGroup
             defaultValue="private"
@@ -184,10 +190,10 @@ export default function AddAdPage() {
               <Label htmlFor="business">Бізнес</Label>
             </div>
           </RadioGroup>
-        </div>
+        </div> */}
 
         {/* Location and Condition */}
-        <div className="border-t pt-6">
+        {/* <div className="border-t pt-6">
           <h2 className="mb-4 text-xl font-semibold">Місцезнаходження</h2>
 
           <div className="mb-4">
@@ -222,7 +228,7 @@ export default function AddAdPage() {
               </SelectContent>
             </Select>
           </div>
-        </div>
+        </div> */}
 
         {/* Category and Additional Info */}
         <div className="border-t pt-6">
@@ -249,7 +255,7 @@ export default function AddAdPage() {
             )}
           </div>
 
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <Label htmlFor="brand">Бренд</Label>
             <Input
               id="brand"
@@ -257,8 +263,8 @@ export default function AddAdPage() {
               {...form.register('brand')}
             />
           </div>
-
-          <div>
+ */}
+          {/* <div>
             <Label>Вікова група</Label>
             <div className="mt-2 flex flex-col gap-2">
               {['0-2 роки', '2 роки', '3-5 років'].map((age) => (
@@ -274,7 +280,7 @@ export default function AddAdPage() {
                       } else {
                         form.setValue(
                           'ageGroup',
-                          current.filter((a) => a !== age),
+                          current.filter((a) => a !== age)
                         );
                       }
                     }}
@@ -283,7 +289,7 @@ export default function AddAdPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </form>
       {/* Photos */}

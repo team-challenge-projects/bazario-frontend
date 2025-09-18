@@ -13,7 +13,15 @@ export async function POST() {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          title: 'string',
+          description: 'string',
+          images: ['string'],
+          price: 0,
+          cityName: 'string',
+          cityCoordinate: 'string',
+          distance: 0,
+        }),
         credentials: 'include',
       },
     );

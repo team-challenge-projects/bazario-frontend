@@ -15,7 +15,6 @@ export async function PATCH(
     title,
     description,
     price,
-    categoryId: 1,
   };
   if (!id) {
     return NextResponse.json(

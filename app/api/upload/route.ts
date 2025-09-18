@@ -8,7 +8,6 @@ export async function POST(req: NextRequest) {
   const { id, type } = Object.fromEntries(formData.entries());
   formData.delete('id');
   formData.delete('type');
-  console.log('formData', Object.fromEntries(formData.entries()));
 
   if (!id) {
     return NextResponse.json(
