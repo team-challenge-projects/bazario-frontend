@@ -8,7 +8,7 @@ interface UserStore {
   user: IUser | null;
   isLoading: boolean;
   error: string | null;
-  fetchUser: () => Promise<void>;
+  fetchUser: () => Promise<IUser | undefined>;
   setUser: (user: IUser) => void;
   logout: () => void;
 }
@@ -35,6 +35,7 @@ export const useUserStore = create<UserStore>()(
 
           const data = (await res.json()) as IUser;
           set({ user: data, isLoading: false });
+          return data;
         } catch (error) {
           if (error instanceof Error) {
             set({ error: error.message, isLoading: false });

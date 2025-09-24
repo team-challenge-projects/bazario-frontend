@@ -33,10 +33,14 @@ const Login: FC = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data);
-      if (response === 'OK') await fetchUser();
+      if (response === 'OK') {
+        const user = await fetchUser();
+        if (user) {
+          router.push(`/profile/${user?.id}`);
+        }
+      }
 
       console.log('✅ Відповідь сервера:', response);
-      router.push(`/profile/${user?.id}`);
     } catch (error) {
       console.log(error);
     }
