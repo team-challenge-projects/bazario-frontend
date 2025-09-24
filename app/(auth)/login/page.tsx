@@ -29,11 +29,10 @@ const Login: FC = () => {
   });
   const router = useRouter();
   const fetchUser = useUserStore((state) => state.fetchUser);
-  const user = useUserStore((state) => state.user);
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data);
-      if (response === 'OK') {
+      if (response) {
         const user = await fetchUser();
         if (user) {
           router.push(`/profile/${user?.id}`);
@@ -47,7 +46,7 @@ const Login: FC = () => {
     reset();
   };
 
-  const loginUser = async (userData: LoginFormData): Promise<string> => {
+  const loginUser = async (userData: LoginFormData): Promise<boolean> => {
     console.log('✅ Відправлені дані:', userData);
     try {
       const response = await fetch('/api/auth/login', {
@@ -57,10 +56,10 @@ const Login: FC = () => {
         credentials: 'include',
       });
       console.log('🎉 Успішний вхід:', response);
-      return response.statusText;
+      return response.ok;
     } catch {
       console.error('❌ Помилка входу:');
-      return '';
+      return false;
     }
   };
 
